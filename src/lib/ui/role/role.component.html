@@ -1,0 +1,57 @@
+<form novalidate autocomplete="off" [formGroup]="formGroup">
+  <div class="animated fadeIn row" #dtContainer>
+    <div class="col-sm-12">
+      <button class="btn btn-primary pull-right ml-2" (click)="save()" [disabled]="permissionLoading || loading"><i class="fa fa-save"></i> Save</button>
+      <button class="btn btn-danger pull-right" [disabled]="selectedPermissions.length < 1" (click)="revokePermissions()"><i class="fa fa-chain-broken"></i> Revoke</button>
+    </div>
+    <div class="col-lg-12 mx-auto">
+      <tabset>
+        <!--  Role tab -->
+        <tab heading="Role">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <strong>Role Details </strong>
+                </div>
+                <div class="card-body">
+                  <div class="form-group required">
+                    <label>Name</label>
+                    <input type="text" formControlName="name" class="form-control" [ngClass]="getFormClasses('name')" placeholder="Name" />
+                  </div>
+                  <div class="form-group required">
+                    <label>Description</label>
+                    <textarea type="text" formControlName="description" class="form-control" placeholder="Description..." [ngClass]="getFormClasses('description')"> </textarea>
+                  </div>
+                  <div class="form-group required">
+                    <label>Display Name</label>
+                    <input type="text" formControlName="displayName" class="form-control" [ngClass]="getFormClasses('displayName')" placeholder="Display Name..." />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <!--  Permission tab -->
+        <tab heading="Permission">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card" #detailCard>
+                <div class="card-header">
+                  <strong>Role permissions</strong>
+                </div>
+                <div class="card-body">
+                  <label>Select Permission</label>
+                  <typeahead-control [options]="allPermissions" (updated)="addPermission($event)"></typeahead-control>
+                  <role-permissions [rows]="rolePermissions" (cbClick)="updateSelectedPermissions($event)"></role-permissions>
+                  <br class="mt-5" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <!-- More tabs -->
+      </tabset>
+    </div>
+  </div>
+</form>
