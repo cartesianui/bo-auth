@@ -19,6 +19,17 @@ After building your library with `ng build ng-auth`, go to the dist folder `cd d
 
 Run `ng test ng-auth` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
+## Linting
+
+1. Run prettier commands in lib folder
+
+`npx prettier src/**/*.{js,jsx,ts,tsx,html,css,scss} --check`
+`npx prettier src/**/*.{js,jsx,ts,tsx,html,css,scss} --write`
+
+2. Run lint command as
+
+`ng lint --project=ng-auth`
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
