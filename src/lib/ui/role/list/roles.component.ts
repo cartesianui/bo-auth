@@ -35,7 +35,7 @@ export class RolesComponent extends ListingControlsComponent<Role, SearchRoleFor
   }
 
   ngOnInit(): void {
-    this.criteria = new RequestCriteria<SearchRoleForm>(new SearchRoleForm()).limit(2);
+    this.criteria = new RequestCriteria<SearchRoleForm>(new SearchRoleForm());
     this.registerEvents();
   }
 
