@@ -1,6 +1,6 @@
 /*
- * Public API Surface of ng-auth
+ * Public API Surface of bo-auth
  */
-export * from './ng-auth.module';
+export * from './auth.module';
 export * from './models';
 export * from './authorization.sandbox';

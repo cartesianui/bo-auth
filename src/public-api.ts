@@ -1,4 +1,4 @@
 /*
- * Public API Surface of ng-auth
+ * Public API Surface of bo-auth
  */
 export * from './lib';

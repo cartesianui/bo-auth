@@ -36,4 +36,4 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
   ],
   providers: [AuthHttpService, AuthorizationSandbox]
 })
-export class NgAuthModule {}
+export class AuthModule {}

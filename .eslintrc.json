@@ -10,8 +10,8 @@
       ],
       "parserOptions": {
         "project": [
-          "projects/ng-auth/tsconfig.lib.json",
-          "projects/ng-auth/tsconfig.spec.json"
+          "projects/bo-auth/tsconfig.lib.json",
+          "projects/bo-auth/tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },

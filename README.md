@@ -1,23 +1,23 @@
-# NgAuth
+# Back-Office Auth Module
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.0.
 
 ## Code scaffolding
 
-Run `ng generate component component-name --project ng-auth` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ng-auth`.
-> Note: Don't forget to add `--project ng-auth` or else it will be added to the default project in your `angular.json` file. 
+Run `ng generate component component-name --project bo-auth` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project bo-auth`.
+> Note: Don't forget to add `--project bo-auth` or else it will be added to the default project in your `angular.json` file. 
 
 ## Build
 
-Run `ng build ng-auth` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build bo-auth` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Publishing
 
-After building your library with `ng build ng-auth`, go to the dist folder `cd dist/ng-auth` and run `npm publish`.
+After building your library with `ng build bo-auth`, go to the dist folder `cd dist/bo-auth` and run `npm publish`.
 
 ## Running unit tests
 
-Run `ng test ng-auth` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test bo-auth` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Linting
 
@@ -28,7 +28,7 @@ Run `ng test ng-auth` to execute the unit tests via [Karma](https://karma-runner
 
 2. Run lint command as
 
-`ng lint --project=ng-auth`
+`ng lint --project=bo-auth`
 
 ## Further help
 
