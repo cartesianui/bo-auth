@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Sandbox } from '@cartesianui/common';
-import { RequestCriteria } from '@cartesianui/ng-axis';
+import { RequestCriteria } from '@cartesianui/core';
 import { select, Store } from '@ngrx/store';
 import * as roleActions from './store/role.action';
 import * as permissionActions from './store/permission.action';

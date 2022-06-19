@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Injector, OnDe
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@cartesianui/common';
-import { RequestCriteria } from '@cartesianui/ng-axis';
+import { RequestCriteria } from '@cartesianui/core';
 import { Subscription } from 'rxjs';
 import { ListHelper } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';

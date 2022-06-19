@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { RequestCriteria, type } from '@cartesianui/ng-axis';
+import { RequestCriteria, type } from '@cartesianui/core';
 import { RolePermissions } from '../models/domain/role-permissions.model';
 import { SearchPermissionForm } from '../models/form/search-permission.model';
 import { Permission } from '../models/domain/permission.model';
