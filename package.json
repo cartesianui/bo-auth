@@ -1,12 +1,12 @@
 {
   "name": "@cartesianui/bo-auth",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0",
-    "@cartesianui/js-axis": "^1.0.0",
     "@cartesianui/core": "^1.0.0",
-    "@cartesianui/common": "^1.0.0"
+    "@cartesianui/common": "^0.1.0",
+    "@cartesianui/forms": "^0.1.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
