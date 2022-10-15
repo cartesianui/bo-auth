@@ -14,14 +14,14 @@ const INITIAL_STATE: RolesState = {
 
 const createRoleReducers = createReducer(
   INITIAL_STATE,
-  on(roleActions.doFetchRoles, (state) =>
+  on(roleActions.doFetchRoles, roleActions.doFetchUserRoles,(state) =>
     Object.assign({}, state, {
       loading: true,
       loaded: false,
       failed: false
     })
   ),
-  on(roleActions.doFetchRolesSuccess, (state, { roles }) =>
+  on(roleActions.doFetchRolesSuccess, roleActions.doFetchUserRolesSuccess,(state, { roles }) =>
     Object.assign({}, state, {
       loading: false,
       loaded: true,
@@ -29,7 +29,7 @@ const createRoleReducers = createReducer(
       data: roles
     })
   ),
-  on(roleActions.doFetchRolesFail, (state) =>
+  on(roleActions.doFetchRolesFail, roleActions.doFetchUserRolesFail,(state) =>
     Object.assign({}, INITIAL_STATE, {
       failed: true
     })

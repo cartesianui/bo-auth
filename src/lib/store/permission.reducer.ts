@@ -11,21 +11,21 @@ const INITIAL_STATE: PermissionState = {
 
 const createPermissionReducers = createReducer(
   INITIAL_STATE,
-  on(permissionActions.doAttachPermission, permissionActions.doDetachPermission, permissionActions.doFetchPermission, permissionActions.doSyncPermissions, (state) =>
+  on(permissionActions.doAttachPermission, permissionActions.doDetachPermission, permissionActions.doAttachUserPermission, permissionActions.doDetachUserPermission, permissionActions.doFetchPermission, permissionActions.doSyncPermissions, (state) =>
     Object.assign({}, state, {
       loading: true,
       loaded: false,
       failed: false
     })
   ),
-  on(permissionActions.doAttachPermissionSuccess, permissionActions.doDetachPermissionSuccess, permissionActions.doSyncPermissionsSuccess, (state) =>
+  on(permissionActions.doAttachPermissionSuccess, permissionActions.doDetachPermissionSuccess, permissionActions.doSyncPermissionsSuccess, permissionActions.doAttachUserPermissionSuccess, permissionActions.doDetachUserPermissionSuccess,(state) =>
     Object.assign({}, state, {
       loading: false,
       loaded: true,
       failed: false
     })
   ),
-  on(permissionActions.doAttachPermissionFail, permissionActions.doDetachPermissionFail, permissionActions.doFetchPermissionFail, permissionActions.doSyncPermissionsFail, (state) =>
+  on(permissionActions.doAttachPermissionFail, permissionActions.doDetachPermissionFail, permissionActions.doFetchPermissionFail, permissionActions.doSyncPermissionsFail, permissionActions.doAttachUserPermissionFail, permissionActions.doDetachUserPermissionFail,(state) =>
     Object.assign({}, INITIAL_STATE, {
       failed: true
     })

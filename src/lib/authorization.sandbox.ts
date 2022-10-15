@@ -32,12 +32,16 @@ export class AuthorizationSandbox extends Sandbox {
   permissionsLoaded$ = this.store.pipe(select(selectors.getPermissionsLoaded));
   permissionsFailed$ = this.store.pipe(select(selectors.getPermissionsFailed));
 
-  constructor(protected store: Store<AuthorizationState>, protected injector: Injector) {
+  constructor(protected store: Store<AuthorizationState>, protected override injector: Injector) {
     super(injector);
   }
 
   fetchRoles = (requestCriteria: RequestCriteria<SearchRoleForm>): void => {
     this.store.dispatch(roleActions.doFetchRoles({ requestCriteria }));
+  };
+
+  fetchUserRoles = (id: string, requestCriteria: RequestCriteria<SearchRoleForm>): void => {
+    this.store.dispatch(roleActions.doFetchUserRoles({ id, requestCriteria }));
   };
 
   fetchRoleById = (id: string, criteria: RequestCriteria<SearchRoleForm>) => {
@@ -62,6 +66,14 @@ export class AuthorizationSandbox extends Sandbox {
 
   fetchPermissions = (requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
     this.store.dispatch(permissionActions.doFetchPermissions({ requestCriteria }));
+  };
+
+  fetchUserPermissions = (id: string, requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
+    this.store.dispatch(permissionActions.doFetchUserPermissions({ id, requestCriteria }));
+  };
+
+  fetchRolePermissions = (id: string, requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
+    this.store.dispatch(permissionActions.doFetchRolePermissions({ id, requestCriteria }));
   };
 
   fetchPermissionById = (id: string) => {

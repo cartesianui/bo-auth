@@ -1,0 +1,41 @@
+<div class="animated fadeIn dt" #dtContainer>
+  <div class="row">
+    <div class="col-md-12 my-2">
+      <span class="float-end">Total: {{ pagination?.total ?? rows?.length }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ngx-datatable
+        class="material"
+        [rows]="rows"
+        [columns]="[{ name: 'name' }, { description: 'description' }]"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="'auto'"
+        [externalPaging]="false"
+        [count]="rows?.length"
+        [limit]="5"
+        [selectionType]="'checkbox'"
+        (activate)="onActivate($event)"
+        (select)="onSelect($event)"
+      >
+        <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true"></ngx-datatable-column>
+
+        <ngx-datatable-column name="Name" [width]="300">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            {{ value }}
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Description" [width]="500">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            {{ value }}
+          </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+    </div>
+  </div>
+</div>
