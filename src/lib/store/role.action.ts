@@ -24,6 +24,13 @@ export const doFetchRolesSuccess = createAction(type('[Auth] Do Fetch Roles Succ
 export const doFetchRolesFail = createAction(type('[Auth] Do Fetch Roles Fail'), props<{ error: any }>());
 
 /**
+ * Fetch User Roles Actions
+ */
+export const doFetchUserRoles = createAction(type('[Auth] Do Fetch User Roles'), props<{ id: string, requestCriteria: RequestCriteria<SearchRoleForm> }>());
+export const doFetchUserRolesSuccess = createAction(type('[Auth] Do Fetch User Roles Success'), props<{ roles: Role[] }>());
+export const doFetchUserRolesFail = createAction(type('[Auth] Do Fetch User Roles Fail'), props<{ error: any }>());
+
+/**
  * Delete Role Actions
  */
 export const doDeleteRole = createAction(type('[Auth] Do Delete Role'), props<{ id: string }>());

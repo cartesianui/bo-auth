@@ -10,16 +10,29 @@ import { AuthorizationState } from './auth.state';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private roleHttpService: AuthHttpService, private store: Store<AuthorizationState>) {}
+  constructor(private actions$: Actions, private httpService: AuthHttpService, private store: Store<AuthorizationState>) {}
 
   doFetchRoles$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromRoleActions.doFetchRoles),
       map((action) => action.requestCriteria),
       switchMap((criteria) =>
-        this.roleHttpService.fetchRoles(criteria).pipe(
+        this.httpService.fetchRoles(criteria).pipe(
           map((results) => fromRoleActions.doFetchRolesSuccess({ roles: results })),
           catchError((error) => of(fromRoleActions.doFetchRolesFail(error)))
+        )
+      )
+    )
+  );
+
+  doFetchUserRoles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromRoleActions.doFetchUserRoles),
+      map((action) => Object.assign({}, { id: action.id, criteria: action.requestCriteria })),
+      switchMap((data) =>
+        this.httpService.fetchUserRoles(data.id, data.criteria).pipe(
+          map((results) => fromRoleActions.doFetchUserRolesSuccess({ roles: results })),
+          catchError((error) => of(fromRoleActions.doFetchUserRolesFail(error)))
         )
       )
     )
@@ -30,7 +43,7 @@ export class AuthEffects {
       ofType(fromRoleActions.doFetchRole),
       map((action) => Object.assign({}, { id: action.id, criteria: action.criteria })),
       switchMap((data) =>
-        this.roleHttpService.fetchRoleById(data.id, data.criteria).pipe(
+        this.httpService.fetchRoleById(data.id, data.criteria).pipe(
           map((result) => fromRoleActions.doFetchRoleSuccess({ role: result.data })),
           catchError((error) => of(fromRoleActions.doFetchRoleFail(error)))
         )
@@ -43,7 +56,7 @@ export class AuthEffects {
       ofType(fromRoleActions.doCreateRole),
       map((action) => action.form),
       switchMap((form) =>
-        this.roleHttpService.createRole(form).pipe(
+        this.httpService.createRole(form).pipe(
           map((result) => fromRoleActions.doCreateRoleSuccess({ role: result.data })),
           catchError((error) => of(fromRoleActions.doCreateRoleFail(error)))
         )
@@ -56,7 +69,7 @@ export class AuthEffects {
       ofType(fromRoleActions.doDeleteRole),
       map((action) => action.id),
       switchMap((id) =>
-        this.roleHttpService.deleteRoleById(id).pipe(
+        this.httpService.deleteRoleById(id).pipe(
           map(() => fromRoleActions.doDeleteRoleSuccess()),
           catchError((error) => of(fromRoleActions.doDeleteRoleFail(error)))
         )
@@ -64,51 +77,77 @@ export class AuthEffects {
     )
   );
 
-  doAttachPermission$ = createEffect(() => {
-    return this.actions$.pipe(
+  doAttachPermission$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(fromPermissionActions.doAttachPermission),
       map((action) => action.permForm),
       switchMap((permForm) =>
-        this.roleHttpService.attachPermission(permForm).pipe(
+        this.httpService.attachPermission(permForm).pipe(
           map(() => fromPermissionActions.doAttachPermissionSuccess()),
           catchError((error) => of(fromPermissionActions.doAttachPermissionFail(error)))
         )
       )
-    );
-  });
+    )
+  );
 
-  doDetachPermission$ = createEffect(() => {
-    return this.actions$.pipe(
+  doAttachUserPermission$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromPermissionActions.doAttachPermission),
+      map((action) => action.permForm),
+      switchMap((permForm) =>
+        this.httpService.attachUserPermission(permForm).pipe(
+          map(() => fromPermissionActions.doAttachPermissionSuccess()),
+          catchError((error) => of(fromPermissionActions.doAttachPermissionFail(error)))
+        )
+      )
+    )
+  );
+
+  doDetachPermission$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(fromPermissionActions.doDetachPermission),
       map((action) => action.permForm),
       switchMap((permForm) =>
-        this.roleHttpService.detachPermission(permForm).pipe(
+        this.httpService.detachPermission(permForm).pipe(
           map(() => fromPermissionActions.doDetachPermissionSuccess()),
           catchError((error) => of(fromPermissionActions.doDetachPermissionFail(error)))
         )
       )
-    );
-  });
+    )
+  );
 
-  doSyncPermissions$ = createEffect(() => {
-    return this.actions$.pipe(
+  doDetachUserPermission$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromPermissionActions.doDetachPermission),
+      map((action) => action.permForm),
+      switchMap((permForm) =>
+        this.httpService.detachUserPermission(permForm).pipe(
+          map(() => fromPermissionActions.doDetachPermissionSuccess()),
+          catchError((error) => of(fromPermissionActions.doDetachPermissionFail(error)))
+        )
+      )
+    )
+  );
+
+  doSyncPermissions$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(fromPermissionActions.doSyncPermissions),
       map((action) => action.permForm),
       switchMap((permForm) =>
-        this.roleHttpService.syncPermissions(permForm).pipe(
+        this.httpService.syncPermissions(permForm).pipe(
           map(() => fromPermissionActions.doSyncPermissionsSuccess()),
           catchError((error) => of(fromPermissionActions.doSyncPermissionsFail(error)))
         )
       )
-    );
-  });
+    )
+  );
 
   doFetchPermissions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromPermissionActions.doFetchPermissions),
       map((action) => action.requestCriteria),
       switchMap((criteria) =>
-        this.roleHttpService.fetchPermissions(criteria).pipe(
+        this.httpService.fetchPermissions(criteria).pipe(
           map((results) =>
             fromPermissionActions.doFetchPermissionsSuccess({
               permissions: results
@@ -120,12 +159,46 @@ export class AuthEffects {
     )
   );
 
+  doFetchUserPermissions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromPermissionActions.doFetchUserPermissions),
+      map((action) => Object.assign({}, { id: action.id, criteria: action.requestCriteria })),
+      switchMap((data) =>
+        this.httpService.fetchUserPermissions(data.id, data.criteria).pipe(
+          map((results) =>
+            fromPermissionActions.doFetchUserPermissionsSuccess({
+              permissions: results
+            })
+          ),
+          catchError((error) => of(fromPermissionActions.doFetchUserPermissionsFail(error)))
+        )
+      )
+    )
+  );
+
+  doFetchRolePermissions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromPermissionActions.doFetchRolePermissions),
+      map((action) => Object.assign({}, { id: action.id, criteria: action.requestCriteria })),
+      switchMap((data) =>
+        this.httpService.fetchRolePermissions(data.id, data.criteria).pipe(
+          map((results) =>
+            fromPermissionActions.doFetchRolePermissionsSuccess({
+              permissions: results
+            })
+          ),
+          catchError((error) => of(fromPermissionActions.doFetchRolePermissionsFail(error)))
+        )
+      )
+    )
+  );
+
   doFetchPermission$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromPermissionActions.doFetchPermission),
       map((action) => action.id),
       switchMap((id) =>
-        this.roleHttpService.fetchPermission(id).pipe(
+        this.httpService.fetchPermission(id).pipe(
           map((result) =>
             fromPermissionActions.doFetchPermissionSuccess({
               permission: result.data
@@ -137,38 +210,38 @@ export class AuthEffects {
     )
   );
 
-  doAssignRole = createEffect(() => {
-    return this.actions$.pipe(
+  doAssignRole = createEffect(() =>
+    this.actions$.pipe(
       ofType(fromRoleActions.doAssignRole),
       map((action) => action.roleForm),
       switchMap((roleForm) =>
-        this.roleHttpService.assignRole(roleForm).pipe(
+        this.httpService.assignRole(roleForm).pipe(
           map(() => fromRoleActions.doAssignRoleSuccess()),
           catchError((error) => of(fromRoleActions.doAssignRoleFail(error)))
         )
       )
-    );
-  });
+    )
+  );
 
-  doRevokeRole = createEffect(() => {
-    return this.actions$.pipe(
+  doRevokeRole = createEffect(() =>
+    this.actions$.pipe(
       ofType(fromRoleActions.doRevokeRole),
       map((action) => action.roleForm),
       switchMap((roleForm) =>
-        this.roleHttpService.revokeRole(roleForm).pipe(
+        this.httpService.revokeRole(roleForm).pipe(
           map(() => fromRoleActions.doRevokeRoleSuccess()),
           catchError((error) => of(fromRoleActions.doRevokeRoleFail(error)))
         )
       )
-    );
-  });
+    )
+  );
 
   doSyncRole$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fromRoleActions.doSyncRole),
       map((action) => action.roleForm),
       switchMap((roleForm) =>
-        this.roleHttpService.syncRole(roleForm).pipe(
+        this.httpService.syncRole(roleForm).pipe(
           map(() => fromRoleActions.doSyncRoleSuccess()),
           catchError((error) => of(fromRoleActions.doSyncRoleFail(error)))
         )

@@ -19,6 +19,21 @@ export const doFetchPermissionsSuccess = createAction(type('[Auth] Do Fetch Perm
 export const doFetchPermissionsFail = createAction(type('[Auth] Do Fetch Permissions Fail'), props<{ error: any }>());
 
 /**
+ * Fetch Role Permissions Actions
+ */
+export const doFetchRolePermissions = createAction(type('[Auth] Do Fetch Role Permissions'), props<{ id: string, requestCriteria: RequestCriteria<SearchPermissionForm> }>());
+export const doFetchRolePermissionsSuccess = createAction(type('[Auth] Do Fetch Role Permissions Success'), props<{ permissions: Permission[] }>());
+export const doFetchRolePermissionsFail = createAction(type('[Auth] Do Fetch Role Permissions Fail'), props<{ error: any }>());
+
+/**
+ * Fetch User Permissions Actions
+ */
+export const doFetchUserPermissions = createAction(type('[Auth] Do Fetch User Permissions'), props<{ id: string, requestCriteria: RequestCriteria<SearchPermissionForm> }>());
+export const doFetchUserPermissionsSuccess = createAction(type('[Auth] Do Fetch User Permissions Success'), props<{ permissions: Permission[] }>());
+export const doFetchUserPermissionsFail = createAction(type('[Auth] Do Fetch User Permissions Fail'), props<{ error: any }>());
+
+
+/**
  * Attach Permission Actions
  */
 export const doAttachPermission = createAction(type('[Auth] Do Attach Permission'), props<{ permForm: RolePermissions }>());
@@ -26,11 +41,26 @@ export const doAttachPermissionSuccess = createAction(type('[Auth] Do Attach Per
 export const doAttachPermissionFail = createAction(type('[Auth] Do Attach Permission Fail'), props<{ error: any }>());
 
 /**
+ * Attach User Permission Actions
+ */
+export const doAttachUserPermission = createAction(type('[Auth] Do Attach User Permission'), props<{ permForm: RolePermissions }>());
+export const doAttachUserPermissionSuccess = createAction(type('[Auth] Do Attach User Permission Success'));
+export const doAttachUserPermissionFail = createAction(type('[Auth] Do Attach User Permission Fail'), props<{ error: any }>());
+
+/**
  * Detach Permission Actions
  */
 export const doDetachPermission = createAction(type('[Auth] Do Detach Permission'), props<{ permForm: RolePermissions }>());
 export const doDetachPermissionSuccess = createAction(type('[Auth] Do Detach Permission Success'));
 export const doDetachPermissionFail = createAction(type('[Auth] Do Detach Permission Fail'), props<{ error: any }>());
+
+/**
+ * Detach User Permission Actions
+ */
+export const doDetachUserPermission = createAction(type('[Auth] Do Detach User Permission'), props<{ permForm: RolePermissions }>());
+export const doDetachUserPermissionSuccess = createAction(type('[Auth] Do Detach User Permission Success'));
+export const doDetachUserPermissionFail = createAction(type('[Auth] Do Detach User Permission Fail'), props<{ error: any }>());
+
 
 /**
  * Sync Permission Actions

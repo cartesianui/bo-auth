@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationComponent } from './authorization.component';
-import { RolesComponent } from './ui/role/list/roles.component';
-import { PermissionsComponent } from './ui/permission/list/permissions.component';
-import { RoleComponent } from './ui/role/role.component';
-import { RoleFormComponent } from './ui/role/create/role-form.component';
-import { PermissionComponent } from './ui/permission/permission.component';
+import { RolesComponent } from './components/role/roles.component';
+import { PermissionsComponent } from './components/permission/permissions.component';
+import { RoleComponent } from './components/role/edit/role.component';
+import { RoleFormComponent } from './components/role/create/role-form.component';
+import { PermissionComponent } from './components/permission/form/permission.component';
 
 const routes: Routes = [
   {
@@ -17,43 +17,47 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
         redirectTo: 'roles',
-        pathMatch: 'full'
       },
       {
         path: 'roles',
         component: RolesComponent,
         data: {
-          title: 'Roles List'
-        }
-      },
-      {
-        path: 'roles/create',
-        component: RoleFormComponent,
-        data: {
-          title: 'Create Roles'
-        }
-      },
-      {
-        path: 'roles/:id',
-        component: RoleComponent,
-        data: {
-          title: 'Role Detail'
-        }
+          title: 'Roles'
+        },
+        children: [
+          {
+            path: ':id',
+            component: RoleComponent,
+            data: {
+              title: 'Edit'
+            }
+          },
+          {
+            path: 'create',
+            component: RoleFormComponent,
+            data: {
+              title: 'Create'
+            }
+          },
+        ]
       },
       {
         path: 'permissions',
         component: PermissionsComponent,
         data: {
-          title: 'Permissions List'
-        }
-      },
-      {
-        path: 'permissions/:id',
-        component: PermissionComponent,
-        data: {
-          title: 'Permission Detail'
-        }
+          title: 'Permissions'
+        },
+        children: [
+          {
+            path: ':id',
+            component: PermissionComponent,
+            data: {
+              title: 'Edit'
+            }
+          }
+        ]
       }
     ]
   }

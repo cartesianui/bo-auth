@@ -1,0 +1,53 @@
+<page-title [title]="'Roles'" [breadcrumb]="true"></page-title>
+<page-actions
+  (search)="search()"
+  (delete)="delete()"
+  (create)="create()"
+  [disabled]="{
+    delete: selected.length === 0
+  }"
+>
+</page-actions>
+<div class="animated fadeIn dt" #dtContainer>
+  <div class="row">
+    <div class="col-md-12 my-2">
+      <span class="float-end">Total: {{ pagination.total }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <ngx-datatable
+        class="material"
+        [rows]="data"
+        [columns]="[{ select: 'select' }, { displayName: 'displayName' }, { description: 'description' }]"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="'auto'"
+        [externalPaging]="true"
+        [count]="pagination.total"
+        [offset]="getOffsetFromPagination()"
+        [limit]="pagination.perPage"
+        [selected]="selected"
+        [selectionType]="'checkbox'"
+        (activate)="onActivate($event)"
+        (select)="onSelect($event)"
+        (page)="setPage($event)"
+      >
+        <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true"></ngx-datatable-column>
+
+        <ngx-datatable-column name="display Name" [flexGrow]="3" [minWidth]="200">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <a routerLink="{{ row.id }}">{{ value }}</a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Description" [flexGrow]="3" [minWidth]="200">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            {{ value }}
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>

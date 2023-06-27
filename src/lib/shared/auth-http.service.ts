@@ -37,6 +37,11 @@ export class AuthHttpService extends HttpService {
     return null;
   }
 
+  @GET('/users/{id}/roles')
+  public fetchUserRoles(@Path('id') id: string, @Criteria criteria: RequestCriteria<any>): Observable<any> {
+    return null;
+  }
+
   @GET('/roles/{id}')
   public fetchRoleById(@Path('id') id: string, @Criteria criteria: RequestCriteria<SearchRoleForm>): Observable<any> {
     return null;
@@ -57,6 +62,16 @@ export class AuthHttpService extends HttpService {
     return null;
   }
 
+  @GET('/users/{id}/permissions')
+  public fetchUserPermissions(@Path('id') id: string, @Criteria criteria: RequestCriteria<any>): Observable<any> {
+    return null;
+  }
+
+  @GET('/roles/{id}/permissions')
+  public fetchRolePermissions(@Path('id') id: string, @Criteria criteria: RequestCriteria<any>): Observable<any> {
+    return null;
+  }
+
   @GET('/permissions/{id}')
   public fetchPermission(@Path('id') id: string): Observable<any> {
     return null;
@@ -74,6 +89,16 @@ export class AuthHttpService extends HttpService {
 
   @POST('/permissions/sync')
   public syncPermissions(@Body form): Observable<any> {
+    return null;
+  }
+
+  @POST('/users/permissions/attach')
+  public attachUserPermission(@Body form): Observable<any> {
+    return null;
+  }
+
+  @POST('/users/permissions/detach')
+  public detachUserPermission(@Body form): Observable<any> {
     return null;
   }
 }
