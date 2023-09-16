@@ -1,15 +1,26 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission, SearchPermissionForm } from '../../models';
+
+const permissionChildComponents = {
+  permissionDetails: 'permissionDetails'
+} as const;
+
+type PermissionChildComponent = typeof permissionChildComponents;
 
 @Component({
   selector: 'auth-permissions',
   templateUrl: './permissions.component.html'
 })
-export class PermissionsComponent extends ListingControlsComponent<Permission, SearchPermissionForm> implements OnInit, AfterViewInit, OnDestroy {
+export class PermissionsComponent extends ListingControlsComponent<Permission, SearchPermissionForm, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+  
+  override childComponents: PermissionChildComponent = permissionChildComponents;
 
-  constructor(protected _sandbox: AuthorizationSandbox, injector: Injector) {
+  constructor(
+    protected _sandbox: AuthorizationSandbox,
+    injector: Injector
+  ) {
     super(injector);
   }
 
@@ -22,19 +33,15 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, S
     this.reload();
   }
 
-  ngOnDestroy() {
-    this.removeSubscriptions();
-  }
-
   addSubscriptions = () => {
     this.subscriptions.push(
-      this._sandbox.permissionsFetchData$.subscribe((data: Permission[]) => {
+      this._sandbox.permissionsData$.subscribe((data: Permission[]) => {
         this.data = data;
         this.completeLoading();
       })
     );
     this.subscriptions.push(
-      this._sandbox.permissionsFetchMeta$.subscribe((meta: any) => {
+      this._sandbox.permissionsMetaData$.subscribe((meta: any) => {
         if (meta) {
           this.pagination = meta ? meta.pagination : null;
         }

@@ -11,6 +11,14 @@ const INITIAL_STATE: RoleState = {
 
 const createRoleReducers = createReducer(
   INITIAL_STATE,
+  on(fromRoleActions.doFetchRole, fromRoleActions.doCreateRole, (state, data) =>
+    Object.assign({}, state, {
+      loading: true,
+      loaded: false,
+      failed: false,
+      data: null
+    })
+  ),
   on(fromRoleActions.doFetchRoleSuccess, fromRoleActions.doCreateRoleSuccess, (state, data) =>
     Object.assign({}, state, {
       loading: false,

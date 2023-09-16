@@ -19,10 +19,6 @@ export class PermissionsWidgetComponent extends ListingControlsComponent<Permiss
 
   ngAfterViewInit(): void {}
 
-  ngOnDestroy() {
-    this.removeSubscriptions();
-  }
-
   addSubscriptions = () => {};
 
   list(): void {}

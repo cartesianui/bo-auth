@@ -1,5 +1,4 @@
-<page-title [title]="'Edit Role (' + role?.name + ')'"></page-title>
-<page-actions
+<default-actions
   (save)="save()"
   (attach)="attach()"
   (revoke)="revoke()"
@@ -8,11 +7,11 @@
     attach: permissionsToAttach?.length > 0 ? false: true,
     revoke: permissionsToRevoke?.length > 0 ? false: true
   }"
-></page-actions>
+></default-actions>
 <div class="animated fadeIn">
   <form novalidate autocomplete="off" [formGroup]="roleFormGroup">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
             <strong>General</strong>
@@ -37,17 +36,20 @@
             <strong>Attach Permissions</strong>
           </div>
           <div class="card-body">
-            <label class="form-label">Select Permission</label>
-            <lookup-widget [options]="lookupOptions" [ignoreOptions]="role?.permissions?.data" [(selected)]="permissionsToAttach" ></lookup-widget>
+            <div class="form-group">
+              <lookup-widget [options]="lookupOptions" [ignoreOptions]="role?.permissions?.data" [(selected)]="permissionsToAttach" ></lookup-widget>
+              <small>Select permissions to attach</small>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
             <strong>Role Permissions</strong>
           </div>
           <div class="card-body">
+
             <permissions-list [rows]="role?.permissions?.data" (cbClick)="onCbClick($event)"></permissions-list>
           </div>
         </div>

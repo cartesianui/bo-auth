@@ -19,10 +19,6 @@ export class RolesWidgetComponent extends ListingControlsComponent<Role, SearchR
 
   ngAfterViewInit(): void {}
 
-  ngOnDestroy() {
-    this.removeSubscriptions();
-  }
-
   addSubscriptions = () => {};
 
   list(): void {}

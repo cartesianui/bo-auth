@@ -2,12 +2,20 @@
 <page-actions
   (search)="search()"
   (delete)="delete()"
-  (create)="create()"
+  (create)="showChildComponent(childComponents.createRole)"
+  (edit)="showChildComponent(childComponents.editRole)"
   [disabled]="{
-    delete: selected.length === 0
+    delete: selected.length !== 1,
+    edit: selected.length !== 1
   }"
->
-</page-actions>
+></page-actions>
+
+<app-offcanvas  id="role-forms" [title]="childComponentSelected && childComponentSelected?.title" [visible]="childSelected" (visibleChange)="hideChildComponent($event)" >
+  <auth-create-role *ngIf="isComponentSelected(childComponents.createRole)" (created)="onCreate($event)"/>
+  <auth-edit-role *ngIf="isComponentSelected(childComponents.editRole)" [id]="selected.length && selected[0].id" />
+</app-offcanvas>
+
+
 <div class="animated fadeIn dt" #dtContainer>
   <div class="row">
     <div class="col-md-12 my-2">

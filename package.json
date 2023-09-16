@@ -2,9 +2,9 @@
   "name": "@cartesianui/bo-auth",
   "version": "0.1.0",
   "peerDependencies": {
-    "@angular/common": "~14.0.4",
-    "@angular/core": "~14.0.4",
-    "@angular/forms": "~14.0.4",
+    "@angular/common": "^16.2.2",
+    "@angular/core": "^16.2.2",
+    "@angular/forms": "^16.2.2",
     "@cartesianui/core": "^1.0.1",
     "@cartesianui/common": "^0.1.0",
     "@cartesianui/forms": "^0.1.0"

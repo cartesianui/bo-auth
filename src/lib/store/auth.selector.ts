@@ -1,41 +1,32 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { authFeatureKey } from './auth.reducer';
-import { AuthorizationState } from './auth.state';
+import { AuthorizationState, RolesState, RoleState, PermissionsState, PermissionState } from './auth.state';
 
 export const getAuthState = createFeatureSelector<AuthorizationState>(authFeatureKey);
 
-export const getRoleFetchData: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.role.data);
+export const getRoleState: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.role);
+export const getRoleData: MemoizedSelector<object, object> = createSelector(getRoleState, (state: RoleState) => state.data);
+export const getRoleLoaded: MemoizedSelector<object, boolean> = createSelector(getRoleState, (state: RoleState) => state.loaded);
+export const getRoleLoading: MemoizedSelector<object, boolean> = createSelector(getRoleState, (state: RoleState) => state.loading);
+export const getRoleFailed: MemoizedSelector<object, boolean> = createSelector(getRoleState, (state: RoleState) => state.failed);
 
-export const getRoleLoaded: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.role.loaded);
 
-export const getRoleLoading: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.role.loading);
+export const getRolesState: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.roles);
+export const getRolesData: MemoizedSelector<object, object> = createSelector(getRolesState, (state: RolesState) => state.data.data);
+export const getRolesMetaData: MemoizedSelector<object, object> = createSelector(getRolesState, (state: RolesState) => state.data.meta);
+export const getRolesLoaded: MemoizedSelector<object, boolean> = createSelector(getRolesState, (state: RolesState) => state.loaded);
+export const getRolesLoading: MemoizedSelector<object, boolean> = createSelector(getRolesState, (state: RolesState) => state.loading);
+export const getRolesFailed: MemoizedSelector<object, boolean> = createSelector(getRolesState, (state: RolesState) => state.failed);
 
-export const getRoleFailed: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.role.failed);
+export const getPermissionState: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.permission);
+export const getPermissionData: MemoizedSelector<object, object> = createSelector(getPermissionState, (state: PermissionState) => state.data);
+export const getPermissionLoaded: MemoizedSelector<object, boolean> = createSelector(getPermissionState, (state: PermissionState) => state.loaded);
+export const getPermissionLoading: MemoizedSelector<object, boolean> = createSelector(getPermissionState, (state: PermissionState) => state.loading);
+export const getPermissionFailed: MemoizedSelector<object, boolean> = createSelector(getPermissionState, (state: PermissionState) => state.failed);
 
-export const getRolesFetchData: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.roles.data.data);
-
-export const getRolesFetchMeta: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.roles.data.meta);
-
-export const getRolesLoaded: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.roles.loaded);
-
-export const getRolesLoading: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.roles.loading);
-
-export const getRolesFailed: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.roles.failed);
-
-export const getPermissionFetchData: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.permission.data);
-
-export const getPermissionLoaded: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.permission.loaded);
-
-export const getPermissionLoading: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.permission.loading);
-
-export const getPermissionFailed: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.permission.failed);
-
-export const getPermissionsFetchData: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.permissions.data.data);
-
-export const getPermissionsFetchMeta: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.permissions.data.meta);
-
-export const getPermissionsLoaded: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.permissions.loaded);
-
-export const getPermissionsLoading: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.permissions.loading);
-
-export const getPermissionsFailed: MemoizedSelector<object, boolean> = createSelector(getAuthState, (state: AuthorizationState) => state.permissions.failed);
+export const getPermissionsState: MemoizedSelector<object, object> = createSelector(getAuthState, (state: AuthorizationState) => state.permissions);
+export const getPermissionsData: MemoizedSelector<object, object> = createSelector(getPermissionsState, (state: PermissionsState) => state.data.data);
+export const getPermissionsMetaData: MemoizedSelector<object, object> = createSelector(getPermissionsState, (state: PermissionsState) => state.data.meta);
+export const getPermissionsLoaded: MemoizedSelector<object, boolean> = createSelector(getPermissionsState, (state: PermissionsState) => state.loaded);
+export const getPermissionsLoading: MemoizedSelector<object, boolean> = createSelector(getPermissionsState, (state: PermissionsState) => state.loading);
+export const getPermissionsFailed: MemoizedSelector<object, boolean> = createSelector(getPermissionsState, (state: PermissionsState) => state.failed);

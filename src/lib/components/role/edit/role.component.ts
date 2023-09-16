@@ -1,18 +1,18 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnDestroy} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {BaseComponent} from '@cartesianui/common';
 import {RequestCriteria} from '@cartesianui/core';
 import {AuthorizationSandbox} from '../../../authorization.sandbox';
-import {Permission, Role, SearchPermissionForm, SearchRoleForm} from '../../../models';
+import {Permission, Role, RolePermissions, SearchPermissionForm, SearchRoleForm} from '../../../models';
 
 @Component({
-  selector: 'auth-role',
+  selector: 'auth-edit-role',
   templateUrl: './role.component.html',
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class RoleComponent extends BaseComponent implements AfterViewInit, OnDestroy {
 
-  id: string;
+  @Input() id: string;
   role: Role;
   permissionsToAttach: Permission[] = [];
   permissionsToRevoke: Permission[] = [];
@@ -41,10 +41,6 @@ export class RoleComponent extends BaseComponent implements AfterViewInit, OnDes
     this.loadPermissions();
   }
 
-  ngOnDestroy() {
-    this.removeSubscriptions();
-  }
-
   onCbClick(event) {
     this.permissionsToRevoke = [...event.selected];
   }
@@ -54,13 +50,9 @@ export class RoleComponent extends BaseComponent implements AfterViewInit, OnDes
   // -----------------------------------------------------------------------
 
   addSubscriptions() {
+    
     this.subscriptions.push(
-      this.route.params.subscribe((params) => {
-        this.id = params.id;
-      })
-    );
-    this.subscriptions.push(
-      this._sandbox.roleFetchData$.subscribe((role: Role) => {
+      this._sandbox.roleData$.subscribe((role: Role) => {
         if (role) {
           this.role = role;
           // console.log(this.role.permissions);
@@ -71,7 +63,7 @@ export class RoleComponent extends BaseComponent implements AfterViewInit, OnDes
       })
     );
     this.subscriptions.push(
-      this._sandbox.permissionsFetchData$.subscribe((permissions: Permission[]) => {
+      this._sandbox.permissionsData$.subscribe((permissions: Permission[]) => {
         this.lookupOptions = permissions;
       })
     );
@@ -113,12 +105,12 @@ export class RoleComponent extends BaseComponent implements AfterViewInit, OnDes
   }
 
   attach() {
-    //   const permsIds = this.rolePermissions.map((perm) => perm.id);
-    //   const form = new RolePermissions({
-    //     roleId: this.id,
-    //     permissionsIds: permsIds
-    //   });
-    //   this._sandbox.syncPermissionsOnRole(form);
+      const permsIds = this.permissionsToAttach.map((perm) => perm.id);
+      const form = new RolePermissions({
+        roleId: this.id,
+        permissionsIds: permsIds
+      });
+      this._sandbox.syncPermissionsOnRole(form);
   }
 
   // -----------------------------------------------------------------------

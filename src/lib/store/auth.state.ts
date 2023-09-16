@@ -1,38 +1,13 @@
+import { EntityState, EntityListState } from '@cartesianui/common';
 import { Role, Permission } from '../models';
 
-export interface RoleState {
-  loading: boolean;
-  loaded: boolean;
-  failed: boolean;
-  data: Role | null;
-}
+export type RoleState = EntityState<Role>;
 
-export interface RolesState {
-  loading: boolean;
-  loaded: boolean;
-  failed: boolean;
-  data: {
-    data: Array<Role>;
-    meta: object;
-  };
-}
+export type RolesState = EntityListState<Role>;
 
-export interface PermissionState {
-  loading: boolean;
-  loaded: boolean;
-  failed: boolean;
-  data: Permission | null;
-}
+export type PermissionState = EntityState<Permission>;
 
-export interface PermissionsState {
-  loading: boolean;
-  loaded: boolean;
-  failed: boolean;
-  data: {
-    data: Array<Permission>;
-    meta: object;
-  };
-}
+export type PermissionsState = EntityListState<Permission>;
 
 export interface AuthorizationState {
   roles: RolesState;

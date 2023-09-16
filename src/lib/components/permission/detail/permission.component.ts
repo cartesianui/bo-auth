@@ -1,14 +1,16 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission } from '../../../models';
 
 @Component({
-  selector: 'auth-permission',
+  selector: 'auth-permission-detail',
   templateUrl: './permission.component.html'
 })
-export class PermissionComponent extends BaseComponent implements OnInit, OnDestroy {
-  permission: Permission = null;
+export class PermissionComponent extends BaseComponent implements OnInit, OnChanges, OnDestroy {
+
+  @Input() id: string
+  permission: Permission;
 
   loading: boolean;
   loaded: boolean;
@@ -22,18 +24,13 @@ export class PermissionComponent extends BaseComponent implements OnInit, OnDest
     this.addSubscriptions();
   }
 
-  ngOnDestroy() {
-    this.removeSubscriptions();
+  ngOnChanges(): void {
+    this._sandbox.fetchPermissionById(this.id);
   }
 
   addSubscriptions() {
     this.subscriptions.push(
-      this.route.params.subscribe((params) => {
-        this.fetchPerm(params.id);
-      })
-    );
-    this.subscriptions.push(
-      this._sandbox.permissionFetchData$.subscribe((data: Permission) => {
+      this._sandbox.permissionData$.subscribe((data: Permission) => {
         this.permission = data;
       })
     );
@@ -53,8 +50,4 @@ export class PermissionComponent extends BaseComponent implements OnInit, OnDest
       })
     );
   }
-
-  fetchPerm = (id: string) => {
-    this._sandbox.fetchPermissionById(id);
-  };
 }

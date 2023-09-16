@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthorizationRoutingModule } from './authorization-routing.module';
 import { AuthorizationComponent } from './authorization.component';
@@ -7,7 +7,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { CommonModule as CartesianCommonModule } from '@cartesianui/common';
-import { BoLayoutModule } from '@cartesianui/bo-layout';
+import { FormsModule as CartesianFormsModule } from '@cartesianui/forms';
+import { BoLayoutModule } from '@cartesianui/coreui';
 import { authFeatureKey, authReducers } from './store/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/auth.effect';
@@ -16,8 +17,8 @@ import { AuthorizationSandbox } from './authorization.sandbox';
 import { PermissionsComponent } from './components/permission/permissions.component';
 import { PermissionsWidgetComponent, RolesWidgetComponent } from "./widgets";
 import { RoleComponent } from './components/role/edit/role.component';
-import { RoleFormComponent } from './components/role/create/role-form.component';
-import { PermissionComponent } from './components/permission/form/permission.component';
+import { RoleFormComponent } from './components/role/create/create-role.component';
+import { PermissionComponent } from './components/permission/detail/permission.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BadgeModule } from "@coreui/angular";
@@ -30,6 +31,7 @@ const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
   imports: [
     CommonModule,
     CartesianCommonModule.forFeature(),
+    CartesianFormsModule,
     BoLayoutModule.forFeature(),
     AuthorizationRoutingModule,
     ReactiveFormsModule,
@@ -46,4 +48,18 @@ const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
   ],
   providers: [AuthHttpService, AuthorizationSandbox]
 })
-export class AuthModule {}
+export class AuthModule {
+  static forRoot(): ModuleWithProviders<AuthModule> {
+    return {
+      ngModule: AuthModule,
+      providers: []
+    };
+  }
+
+  static forFeature(): ModuleWithProviders<AuthModule> {
+    return {
+      ngModule: AuthModule,
+      providers: [],
+    }
+  }
+}

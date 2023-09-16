@@ -1,7 +1,16 @@
 <page-title [title]="'Permissions'"></page-title>
 <page-actions
   (search)="search()"
+  (view)="showChildComponent(childComponents.permissionDetails)"
+  [disabled]="{
+    view: selected.length !== 1
+  }"
 ></page-actions>
+
+<app-offcanvas id="permissions-forms" title="Permission Detail" [visible]="childSelected" (visibleChange)="hideChildComponent($event)" >
+  <auth-permission-detail *ngIf="isComponentSelected(childComponents.permissionDetails)" [id]="selected.length && selected[0].id" />
+</app-offcanvas>
+
 <div class="animated fadeIn dt" #dtContainer>
   <div class="row">
     <div class="col-md-12 my-2">
