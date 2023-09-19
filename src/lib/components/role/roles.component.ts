@@ -1,40 +1,32 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input, TemplateRef } from '@angular/core';
+import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input, ChangeDetectorRef} from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
-import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role, SearchRoleForm } from '../../models';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
-const roleChildComponents = {
-  createRole: { id: 'createRole', title: "Create Role"},
-  editRole: { id: 'editRole', title: "Edit Role"}
+const childComponents = {
+  createRole: { id: 'createRole', title: 'Create Role' },
+  editRole: { id: 'editRole', title: 'Edit Role' }
 } as const;
 
-type RoleChildComponent = typeof roleChildComponents;
-
+type ChildComponent = typeof childComponents;
 
 @Component({
   selector: 'auth-roles',
   templateUrl: './roles.component.html'
 })
-export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleForm, RoleChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleForm, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+  @Input() user: string = null;
 
-  @Input() user: string =  null;
+  // editRoleId: string | null = null;
 
-  editRoleId: string | null = null;
+  override childComponents: ChildComponent = childComponents;
 
-  override childComponents: RoleChildComponent = roleChildComponents;
-
-  modalRef?: BsModalRef;
-
-  public collapsed = false;
-
-  constructor(protected _sandbox: AuthorizationSandbox, injector: Injector, private modalService: BsModalService) {
+  constructor(
+    protected sb: AuthorizationSandbox,
+    injector: Injector,
+    private cdr: ChangeDetectorRef
+  ) {
     super(injector);
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
   }
 
   ngOnInit(): void {
@@ -42,19 +34,28 @@ export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleFo
     this.addSubscriptions();
   }
 
-  ngAfterViewInit(): void {
-    this.reload();
-  }
-
   addSubscriptions() {
+    // this.subscriptions.push(
+    //   this.sb.rolesData$.subscribe((data: Role[]) => {
+    //     this.data = [];
+
+    //     this.cdr.detectChanges();
+    //     this.data = [...data];
+    //     // this.cdr.detectChanges();
+    //     this.completeLoading();
+    //   })
+    // );
+    // this.subscriptions.push(
+    //   this._sandbox.roleData$.subscribe((data: Role) => {
+    //     // console.log(data);
+    //     this.data.push(data);
+    //     this.data = [...this.data];
+    //     this.completeLoading();
+    //     //this.ref.markForCheck();
+    //   })
+    // );
     this.subscriptions.push(
-      this._sandbox.rolesData$.subscribe((data: Role[]) => {
-        this.data = data;
-        this.completeLoading();
-      })
-    );
-    this.subscriptions.push(
-      this._sandbox.rolesMetaData$.subscribe((meta: any) => {
+      this.sb.rolesMetaData$.subscribe((meta: any) => {
         if (meta) {
           this.pagination = meta ? meta.pagination : null;
         }
@@ -64,14 +65,15 @@ export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleFo
 
   list(): void {
     this.startLoading();
-    if(this.user) {
-      this._sandbox.fetchUserRoles(this.user, this.criteria);
+    
+    if (this.user) {
+      this.sb.fetchUserRoles(this.user, this.criteria);
     } else {
-      this._sandbox.fetchRoles(this.criteria);
+      this.sb.fetchRoles(this.criteria);
     }
   }
 
-  search() {
+  onSearch() {
     this.setPage(1);
     if (this.searchText) {
       this.criteria.where('name', 'like', this.searchText);
@@ -81,15 +83,15 @@ export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleFo
     this.list();
   }
 
-  delete() {
-    this._sandbox.deleteRoleById(this.selected[0].id);
+  onDelete() {
+    this.sb.deleteRoleById(this.selected[0].id);
   }
 
   onActivate(event) {}
 
-
   onCreate(role: Role) {
+    // this.reload()
     this.selected.push(role);
-    this.showChildComponent(this.childComponents.editRole)
+    this.showChildComponent(this.childComponents.editRole);
   }
 }

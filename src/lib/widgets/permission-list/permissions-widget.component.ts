@@ -16,16 +16,14 @@ export class PermissionsWidgetComponent extends ListingControlsComponent<Permiss
   ngOnInit(): void {
     this.addSubscriptions();
   }
-
-  ngAfterViewInit(): void {}
-
+  
   addSubscriptions = () => {};
 
   list(): void {}
 
   search() {}
 
-  delete() {}
+  onDelete() {}
 
   onActivate(event) {}
 }

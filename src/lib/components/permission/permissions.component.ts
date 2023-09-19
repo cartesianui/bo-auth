@@ -29,10 +29,6 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, S
     this.addSubscriptions();
   }
 
-  ngAfterViewInit(): void {
-    this.reload();
-  }
-
   addSubscriptions = () => {
     this.subscriptions.push(
       this._sandbox.permissionsData$.subscribe((data: Permission[]) => {
@@ -64,7 +60,7 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, S
     return;
   }
 
-  delete() {}
+  onDelete() {}
 
   onActivate(event) {}
 }

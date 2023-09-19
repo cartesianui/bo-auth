@@ -1,4 +1,5 @@
 import { EntityState, EntityListState } from '@cartesianui/common';
+
 import { Role, Permission } from '../models';
 
 export type RoleState = EntityState<Role>;

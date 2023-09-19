@@ -5,4 +5,5 @@ import { WhereItem } from '@cartesianui/core';
 export class SearchRoleForm {
   id: WhereItem = { column: 'id', operator: '=', value: null };
   name: WhereItem = { column: 'name', operator: '=', value: null };
+  guardName: WhereItem = { column: 'guard_name', operator: '=', value: 'api' };
 }

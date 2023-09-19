@@ -5,5 +5,5 @@ import { WhereItem } from '@cartesianui/core';
 export class SearchPermissionForm {
   id: WhereItem = { column: 'id', operator: '=', value: null };
   name: WhereItem = { column: 'name', operator: '=', value: null };
-  guard_name: WhereItem = { column: 'guard_name', operator: '=', value: "api" };
+  guardName: WhereItem = { column: 'guard_name', operator: '=', value: "api" };
 }

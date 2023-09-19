@@ -1,7 +1,7 @@
 <page-title [title]="'Roles'" [breadcrumb]="true"></page-title>
 <page-actions
-  (search)="search()"
-  (delete)="delete()"
+  (search)="onSearch()"
+  (delete)="onDelete()"
   (create)="showChildComponent(childComponents.createRole)"
   (edit)="showChildComponent(childComponents.editRole)"
   [disabled]="{
@@ -26,7 +26,7 @@
     <div class="card-body">
       <ngx-datatable
         class="material"
-        [rows]="data"
+        [rows]="sb.rolesData$ | async"
         [columns]="[{ select: 'select' }, { displayName: 'displayName' }, { description: 'description' }]"
         [columnMode]="'force'"
         [headerHeight]="50"

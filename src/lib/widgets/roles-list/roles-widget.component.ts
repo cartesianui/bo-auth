@@ -17,15 +17,13 @@ export class RolesWidgetComponent extends ListingControlsComponent<Role, SearchR
     this.addSubscriptions();
   }
 
-  ngAfterViewInit(): void {}
-
   addSubscriptions = () => {};
 
   list(): void {}
 
   search() {}
 
-  delete() {}
+  onDelete() {}
 
   onActivate(event) {}
 }
