@@ -4,96 +4,121 @@ import { RequestCriteria } from '@cartesianui/core';
 import { select, Store } from '@ngrx/store';
 import * as roleActions from './store/role.action';
 import * as permissionActions from './store/permission.action';
-import * as selectors from './store/auth.selector';
-import { Role, RolePermissions, SearchPermissionForm, SearchRoleForm } from './models';
+import { Role, RolePermissions, PermissionSearch, RoleSearch, Permission } from './models';
 import { AuthorizationState } from './store/auth.state';
+import { RoleActions } from './store/role/role.actions';
+import { PermissionActions } from './store/permission/permission.actions';
+import * as fromRoles from './store/role/role.reducer';
+import * as fromPermissions from './store/permission/permission.reducer';
+// import * as selectors from './store/auth.selector';
+// import { AuthHttpService } from './shared/auth-http.service';
 
 @Injectable()
 export class AuthorizationSandbox extends Sandbox {
-  
-  roleData$ = this.store.pipe(select(selectors.getRoleData));
-  roleLoading$ = this.store.pipe(select(selectors.getRoleLoading));
-  roleLoaded$ = this.store.pipe(select(selectors.getRoleLoaded));
-  roleFailed$ = this.store.pipe(select(selectors.getRoleFailed));
+  rolesData$ = this.store.pipe(select(fromRoles.entities));
+  rolesMetaData$ = this.store.pipe(select(fromRoles.meta));
+  selectedRole$ = this.store.pipe(select(fromRoles.selected));
 
-  rolesData$ = this.store.pipe(select(selectors.getRolesData));
-  rolesMetaData$ = this.store.pipe(select(selectors.getRolesMetaData));
-  rolesLoading$ = this.store.pipe(select(selectors.getRolesLoading));
-  rolesLoaded$ = this.store.pipe(select(selectors.getRolesLoaded));
-  rolesFailed$ = this.store.pipe(select(selectors.getRolesFailed));
+  permissionsData$ = this.store.pipe(select(fromPermissions.entities));
+  permissionsMetaData$ = this.store.pipe(select(fromPermissions.meta));
+  selectedPermission$ = this.store.pipe(select(fromPermissions.selected));
 
-  permissionData$ = this.store.pipe(select(selectors.getPermissionData));
-  permissionLoading$ = this.store.pipe(select(selectors.getPermissionLoading));
-  permissionLoaded$ = this.store.pipe(select(selectors.getPermissionLoaded));
-  permissionFailed$ = this.store.pipe(select(selectors.getPermissionFailed));
+  // roleData$ = this.store.pipe(select(selectors.getRoleData));
+  // permissionData$ = this.store.pipe(select(selectors.getPermissionData));
+  // permissionLoading$ = this.store.pipe(select(selectors.getPermissionLoading));
+  // permissionLoaded$ = this.store.pipe(select(selectors.getPermissionLoaded));
+  // permissionFailed$ = this.store.pipe(select(selectors.getPermissionFailed));
+  // roleLoading$ = this.store.pipe(select(selectors.getRoleLoading));
+  // roleLoaded$ = this.store.pipe(select(selectors.getRoleLoaded));
+  // roleFailed$ = this.store.pipe(select(selectors.getRoleFailed));
+  // rolesLoading$ = this.store.pipe(select(selectors.getRolesLoading));
+  // rolesLoaded$ = this.store.pipe(select(selectors.getRolesLoaded));
+  // rolesFailed$ = this.store.pipe(select(selectors.getRolesFailed));
+  // permissionsLoading$ = this.store.pipe(select(selectors.getPermissionsLoading));
+  // permissionsLoaded$ = this.store.pipe(select(selectors.getPermissionsLoaded));
+  // permissionsFailed$ = this.store.pipe(select(selectors.getPermissionsFailed));
 
-  permissionsData$ = this.store.pipe(select(selectors.getPermissionsData));
-  permissionsMetaData$ = this.store.pipe(select(selectors.getPermissionsMetaData));
-  permissionsLoading$ = this.store.pipe(select(selectors.getPermissionsLoading));
-  permissionsLoaded$ = this.store.pipe(select(selectors.getPermissionsLoaded));
-  permissionsFailed$ = this.store.pipe(select(selectors.getPermissionsFailed));
-
-  constructor(protected store: Store<AuthorizationState>, protected override injector: Injector) {
+  constructor(
+    protected store: Store<AuthorizationState>,
+    protected override injector: Injector
+  ) {
     super(injector);
   }
 
-  fetchRoles = (requestCriteria: RequestCriteria<SearchRoleForm>): void => {
-    this.store.dispatch(roleActions.doFetchRoles({ requestCriteria }));
+  fetchRoles = (criteria: RequestCriteria<RoleSearch>) => {
+    this.store.dispatch(RoleActions.fetchRoles({ criteria }));
   };
 
-  fetchUserRoles = (id: string, requestCriteria: RequestCriteria<SearchRoleForm>): void => {
-    this.store.dispatch(roleActions.doFetchUserRoles({ id, requestCriteria }));
+  selectRole = (role: Role) => {
+    this.store.dispatch(RoleActions.selectRole({ role }));
   };
 
-  fetchRoleById = (id: string, criteria: RequestCriteria<SearchRoleForm>) => {
-    this.store.dispatch(roleActions.doFetchRole({ id, criteria }));
+  createRole = (role: Role) => {
+    this.store.dispatch(RoleActions.createRole({ role }));
   };
 
-  createRole = (form: Role) => {
-    this.store.dispatch(roleActions.doCreateRole({ form }));
+  updateRole = (id: string, role: Role) => {
+    this.store.dispatch(RoleActions.updateRole({ role: { id, changes: role } }));
   };
 
-  deleteRoleById = (id: string) => {
-    this.store.dispatch(roleActions.doDeleteRole({ id }));
+  deleteRole = (id: string) => {
+    this.store.dispatch(RoleActions.deleteRole({ id }));
   };
 
-  attachPermissions = (permissionForm: RolePermissions): void => {
-    this.store.dispatch(permissionActions.doAttachPermission({ permForm: permissionForm }));
+  fetchPermissions = (criteria: RequestCriteria<PermissionSearch>): void => {
+    this.store.dispatch(PermissionActions.fetchPermissions({ criteria }));
   };
 
-  detachPermissions = (permissionForm: RolePermissions): void => {
-    this.store.dispatch(permissionActions.doDetachPermission({ permForm: permissionForm }));
+  selectPermission = (permission: Permission) => {
+    this.store.dispatch(PermissionActions.selectPermission({ permission }));
   };
 
-  fetchPermissions = (requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
-    this.store.dispatch(permissionActions.doFetchPermissions({ requestCriteria }));
-  };
-
-  fetchUserPermissions = (id: string, requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
-    this.store.dispatch(permissionActions.doFetchUserPermissions({ id, requestCriteria }));
-  };
-
-  fetchRolePermissions = (id: string, requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
-    this.store.dispatch(permissionActions.doFetchRolePermissions({ id, requestCriteria }));
-  };
-
-  fetchPermissionById = (id: string) => {
-    this.store.dispatch(permissionActions.doFetchPermission({ id }));
-  };
-
-  syncPermissionsOnRole(form: RolePermissions) {
-    this.store.dispatch(permissionActions.doSyncPermissions({ permForm: form }));
+  /**
+   * Sync Role Permissions
+   *
+   * @param form: RolePermissions
+   */
+  syncPermissions(form: RolePermissions) {
+    this.store.dispatch(RoleActions.syncPermissions({ form }));
   }
 
-  assignRole = (roleForm: any): void => {
-    this.store.dispatch(roleActions.doAssignRole({ roleForm }));
+  attachPermissions = (form: RolePermissions): void => {
+    this.store.dispatch(RoleActions.attachPermissions({ form }));
   };
 
-  revokeRole = (roleForm: any): void => {
-    this.store.dispatch(roleActions.doRevokeRole({ roleForm }));
+  detachPermissions = (form: RolePermissions): void => {
+    this.store.dispatch(RoleActions.detachPermissions({ form }));
   };
 
-  syncRolesOnUser(form: any) {
-    this.store.dispatch(roleActions.doSyncRole({ roleForm: form }));
-  }
+  // fetchPermission = (id: string) => {
+  //   this.store.dispatch(permissionActions.doFetchPermission({ id }));
+  // };
+
+  // fetchRole = (id: string, criteria: RequestCriteria<RoleSearch>) => {
+  //   this.store.dispatch(roleActions.doFetchRole({ id, criteria }));
+  // };
+
+  // fetchUserRoles = (id: string, requestCriteria: RequestCriteria<SearchRoleForm>): void => {
+  //   this.store.dispatch(roleActions.doFetchUserRoles({ id, requestCriteria }));
+  // };
+
+  // fetchUserPermissions = (id: string, requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
+  //   this.store.dispatch(permissionActions.doFetchUserPermissions({ id, requestCriteria }));
+  // };
+
+  // fetchRolePermissions = (id: string, requestCriteria: RequestCriteria<SearchPermissionForm>): void => {
+  //   this.store.dispatch(permissionActions.doFetchRolePermissions({ id, requestCriteria }));
+  // };
+
+  // assignRole = (roleForm: any): void => {
+  //   this.store.dispatch(roleActions.doAssignRole({ roleForm }));
+  // };
+
+  // revokeRole = (roleForm: any): void => {
+  //   this.store.dispatch(roleActions.doRevokeRole({ roleForm }));
+  // };
+
+  // syncRolesOnUser(form: any) {
+  //   this.store.dispatch(roleActions.doSyncRole({ roleForm: form }));
+  // }
 }

@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input, ChangeDetectorRef} from '@angular/core';
+import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { IRole, Role, SearchRoleForm } from '../../models';
+import { IRole, Role, RoleSearch } from '../../models';
 
 const childComponents = {
   createRole: { id: 'createRole', title: 'Create Role' },
@@ -14,46 +14,24 @@ type ChildComponent = typeof childComponents;
   selector: 'auth-roles',
   templateUrl: './roles.component.html'
 })
-export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleForm, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
-  @Input() user: string = null;
-
-  // editRoleId: string | null = null;
-
+export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+  
   override childComponents: ChildComponent = childComponents;
 
   constructor(
     protected sb: AuthorizationSandbox,
-    injector: Injector,
-    private cdr: ChangeDetectorRef
+    injector: Injector
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.initCriteria(SearchRoleForm);
+    this.initCriteria(RoleSearch);
+    this.hydrateSearchCriteria();
     this.addSubscriptions();
   }
 
   addSubscriptions() {
-    // this.subscriptions.push(
-    //   this.sb.rolesData$.subscribe((data: Role[]) => {
-    //     this.data = [];
-
-    //     this.cdr.detectChanges();
-    //     this.data = [...data];
-    //     // this.cdr.detectChanges();
-    //     this.completeLoading();
-    //   })
-    // );
-    // this.subscriptions.push(
-    //   this._sandbox.roleData$.subscribe((data: Role) => {
-    //     // console.log(data);
-    //     this.data.push(data);
-    //     this.data = [...this.data];
-    //     this.completeLoading();
-    //     //this.ref.markForCheck();
-    //   })
-    // );
     this.subscriptions.push(
       this.sb.rolesMetaData$.subscribe((meta: any) => {
         if (meta) {
@@ -64,34 +42,32 @@ export class RolesComponent extends ListingControlsComponent<IRole, SearchRoleFo
   }
 
   list(): void {
-    this.startLoading();
-    
-    if (this.user) {
-      this.sb.fetchUserRoles(this.user, this.criteria);
-    } else {
-      this.sb.fetchRoles(this.criteria);
-    }
+    this.sb.fetchRoles(this.criteria);
   }
 
-  onSearch() {
-    this.setPage(1);
-    if (this.searchText) {
-      this.criteria.where('name', 'like', this.searchText);
-    } else {
-      this.criteria.where('name', 'like', '');
-    } // TODO: Remove where
+  onSearch($event: { text: string }) {
+    this.criteria.page(1);
+    this.criteria.setSearchField('name', $event.text);
+    this.appendSearchCriteriaToUrl();
     this.list();
   }
 
   onDelete() {
-    this.sb.deleteRoleById(this.selected[0].id);
+    this.message.confirm('Are you sure you want to delete this record?', 'Confirm Deletion', (confirmed) => {
+      if (confirmed) {
+        this.sb.deleteRole(this.selected[0].id);
+        this.selected = [];
+      }
+    });
   }
 
-  onActivate(event) {}
-
   onCreate(role: Role) {
-    // this.reload()
-    this.selected.push(role);
+    this.list();
+    this.edit(role);
+  }
+
+  edit(role: Role) {
+    this.sb.selectRole(role);
     this.showChildComponent(this.childComponents.editRole);
   }
 }

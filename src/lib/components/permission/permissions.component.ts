@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { Permission, SearchPermissionForm } from '../../models';
+import { Permission, PermissionSearch } from '../../models';
 
 const permissionChildComponents = {
   permissionDetails: 'permissionDetails'
@@ -13,31 +13,25 @@ type PermissionChildComponent = typeof permissionChildComponents;
   selector: 'auth-permissions',
   templateUrl: './permissions.component.html'
 })
-export class PermissionsComponent extends ListingControlsComponent<Permission, SearchPermissionForm, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+export class PermissionsComponent extends ListingControlsComponent<Permission, PermissionSearch, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   
   override childComponents: PermissionChildComponent = permissionChildComponents;
 
   constructor(
-    protected _sandbox: AuthorizationSandbox,
+    protected sb: AuthorizationSandbox,
     injector: Injector
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.initCriteria(SearchPermissionForm);
+    this.initCriteria(PermissionSearch);
     this.addSubscriptions();
   }
 
   addSubscriptions = () => {
     this.subscriptions.push(
-      this._sandbox.permissionsData$.subscribe((data: Permission[]) => {
-        this.data = data;
-        this.completeLoading();
-      })
-    );
-    this.subscriptions.push(
-      this._sandbox.permissionsMetaData$.subscribe((meta: any) => {
+      this.sb.permissionsMetaData$.subscribe((meta: any) => {
         if (meta) {
           this.pagination = meta ? meta.pagination : null;
         }
@@ -45,22 +39,19 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, S
     );
   };
 
-  search() {
-    if (this.searchText) {
-      this.criteria.where('name', 'like', this.searchText);
-    } else {
-      this.criteria.where('name', 'like', '');
-    } // TODO: Remove where
+  view(permission: Permission) {
+    this.sb.selectPermission(permission);
+    this.showChildComponent(this.childComponents.permissionDetails);
+  }
+
+  onSearch($event: { text: string }) {
+    this.criteria.page(1);
+    this.criteria.setSearchField('name', $event.text);
+    this.appendSearchCriteriaToUrl();
     this.list();
   }
 
   list(): void {
-    this.startLoading();
-    this._sandbox.fetchPermissions(this.criteria);
-    return;
+    this.sb.fetchPermissions(this.criteria);
   }
-
-  onDelete() {}
-
-  onActivate(event) {}
 }

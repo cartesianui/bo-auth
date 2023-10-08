@@ -1,149 +1,79 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnDestroy} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {BaseComponent} from '@cartesianui/common';
-import {RequestCriteria} from '@cartesianui/core';
-import {AuthorizationSandbox} from '../../../authorization.sandbox';
-import {Permission, Role, RolePermissions, SearchPermissionForm, SearchRoleForm} from '../../../models';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BaseComponent, FormBaseComponent } from '@cartesianui/common';
+import { RequestCriteria } from '@cartesianui/core';
+import { AuthorizationSandbox } from '../../../authorization.sandbox';
+import { Permission, Role, RolePermissions, PermissionSearch, RoleSearch, RoleForm } from '../../../models';
 
 @Component({
   selector: 'auth-edit-role',
   templateUrl: './role.component.html',
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class RoleComponent extends BaseComponent implements AfterViewInit, OnDestroy {
-
-  @Input() id: string;
+export class RoleComponent extends FormBaseComponent<Role> implements AfterViewInit, OnDestroy {
+  // @Input() id: string;
+  // @Input()
   role: Role;
   permissionsToAttach: Permission[] = [];
   permissionsToRevoke: Permission[] = [];
-  lookupOptions: Permission[] = [];
+  permissionLookupOptions: Permission[] = [];
 
-  roleCriteria = new RequestCriteria<SearchRoleForm>(new SearchRoleForm()).with('permissions');
-  permissionCriteria = new RequestCriteria<SearchPermissionForm>(new SearchPermissionForm()).limit(500);
+  permissionCriteria = new RequestCriteria<PermissionSearch>(new PermissionSearch()).limit(500);
 
-  roleFormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required),
-    displayName: new FormControl('', Validators.required)
-  });
-
-  constructor(injector: Injector, protected _sandbox: AuthorizationSandbox) {
+  constructor(
+    injector: Injector,
+    protected sb: AuthorizationSandbox
+  ) {
     super(injector);
+    this.formGroup = new RoleForm({ name: '', displayName: '', description: '', guardName: 'api' }).create();
   }
-
-  // -----------------------------------------------------------------------
-  //                          Event Binding
-  // -----------------------------------------------------------------------
 
   ngAfterViewInit(): void {
     this.addSubscriptions();
-    this.loadRole();
     this.loadPermissions();
   }
 
-  onCbClick(event) {
-    this.permissionsToRevoke = [...event.selected];
-  }
-
-  // -----------------------------------------------------------------------
-  //                              Actions
-  // -----------------------------------------------------------------------
-
   addSubscriptions() {
-    
     this.subscriptions.push(
-      this._sandbox.roleData$.subscribe((role: Role) => {
-        if (role) {
-          this.role = role;
-          // console.log(this.role.permissions);
-          // this.role.permissions = role.permissions.data.map( permission => permission.name);
-          // console.log(this.role);
-          this.roleFormGroup.patchValue(this.role);
-        }
+      this.sb.selectedRole$.subscribe((role: Role) => {
+        this.role = role;
+        this.formGroup.patchValue(role);
       })
     );
     this.subscriptions.push(
-      this._sandbox.permissionsData$.subscribe((permissions: Permission[]) => {
-        this.lookupOptions = permissions;
+      this.sb.permissionsData$.subscribe((permissions: Permission[]) => {
+        this.permissionLookupOptions = permissions;
       })
     );
-  }
-
-  loadRole() {
-    this._sandbox.fetchRoleById(this.id, this.roleCriteria);;
   }
 
   loadPermissions() {
-    this._sandbox.fetchPermissions(this.permissionCriteria);
+    this.sb.fetchPermissions(this.permissionCriteria);
   }
 
-  save() {
-    // if (this.permissionsLoading || this.loading) {
-    //   this.notify.warn('Please wait for the loading to finish', 'Warning!');
-    // }
-    // if (this.isPermissionListChanged()) {
-    //   // this.updatePermission();
-    //   this.notify.info('Updating Permissions');
-    // } else {
-    //   this.notify.info('No changes to update!');
-    // }
+  onSave() {
+    if (this.formGroup.valid) {
+      this.sb.updateRole(this.role.id, new Role(this.formGroup.value));
+    }
   }
 
-  revoke() {
-    //   if (this.selectedPermissions.length > 0) {
-    //     let deletions = 0;
-    //     this.rolePermissions = this.rolePermissions.filter((perm) => {
-    //       const res = this.selectedPermissions.indexOf(perm) === -1;
-    //       if (!res) {
-    //         deletions += 1;
-    //       }
-    //       return res;
-    //     });
-    //     this.selectedPermissions = [];
-    //     // this.resetValidators();
-    //   }
+  onRevoke() {
+    const permissionsIds = this.permissionsToRevoke.map((permission) => permission.id);
+    const form = new RolePermissions({
+      roleId: this.role.id,
+      permissionsIds
+    });
+    this.sb.detachPermissions(form);
+    this.permissionsToRevoke = [];
   }
 
-  attach() {
-      const permsIds = this.permissionsToAttach.map((perm) => perm.id);
-      const form = new RolePermissions({
-        roleId: this.id,
-        permissionsIds: permsIds
-      });
-      this._sandbox.syncPermissionsOnRole(form);
-  }
-
-  // -----------------------------------------------------------------------
-  //                                 Helpers
-  // -----------------------------------------------------------------------
-
-  getFormClasses(controlName: string): string {
-    // const control = this.formGroup.controls[controlName];
-    // if (control.value === '') {
-    //   return '';
-    // }
-    // if (control.valid) {
-    //   return 'is-valid';
-    // } else if (control.dirty && control.touched) {
-    //   return 'is-invalid';
-    // }
-
-    return '';
-  }
-
-  getPermissionByName(permName: string, perms: Permission[]) {
-    // let perm: Permission;
-    // perms.every((p: Permission) => {
-    //   if (p.name === permName) {
-    //     perm = p;
-    //     return false;
-    //   }
-    //   return true;
-    // });
-    // return perm;
-  }
-
-  isPermissionListChanged() {
-    // return !ListHelper.compareListData(this.role.permissions.data, this.rolePermissions, 'id');
+  onAttach() {
+    const permissionsIds = this.permissionsToAttach.map((permission) => permission.id);
+    const form = new RolePermissions({
+      roleId: this.role.id,
+      permissionsIds
+    });
+    this.sb.attachPermissions(form);
+    this.permissionsToAttach = [];
   }
 }

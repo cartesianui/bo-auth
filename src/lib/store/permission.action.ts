@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { RequestCriteria, type } from '@cartesianui/core';
 import { RolePermissions } from '../models/domain/role-permissions.model';
-import { SearchPermissionForm } from '../models/form/search-permission.model';
+import { PermissionSearch } from '../models/form/permission.search';
 import { Permission } from '../models/domain/permission.model';
 
 /**
@@ -14,21 +14,21 @@ export const doFetchPermissionFail = createAction(type('[Auth] Do Fetch Permissi
 /**
  * Fetch Permissions Actions
  */
-export const doFetchPermissions = createAction(type('[Auth] Do Fetch Permissions'), props<{ requestCriteria: RequestCriteria<SearchPermissionForm> }>());
+export const doFetchPermissions = createAction(type('[Auth] Do Fetch Permissions'), props<{ requestCriteria: RequestCriteria<PermissionSearch> }>());
 export const doFetchPermissionsSuccess = createAction(type('[Auth] Do Fetch Permissions Success'), props<{ permissions: Permission[] }>());
 export const doFetchPermissionsFail = createAction(type('[Auth] Do Fetch Permissions Fail'), props<{ error: any }>());
 
 /**
  * Fetch Role Permissions Actions
  */
-export const doFetchRolePermissions = createAction(type('[Auth] Do Fetch Role Permissions'), props<{ id: string, requestCriteria: RequestCriteria<SearchPermissionForm> }>());
+export const doFetchRolePermissions = createAction(type('[Auth] Do Fetch Role Permissions'), props<{ id: string, requestCriteria: RequestCriteria<PermissionSearch> }>());
 export const doFetchRolePermissionsSuccess = createAction(type('[Auth] Do Fetch Role Permissions Success'), props<{ permissions: Permission[] }>());
 export const doFetchRolePermissionsFail = createAction(type('[Auth] Do Fetch Role Permissions Fail'), props<{ error: any }>());
 
 /**
  * Fetch User Permissions Actions
  */
-export const doFetchUserPermissions = createAction(type('[Auth] Do Fetch User Permissions'), props<{ id: string, requestCriteria: RequestCriteria<SearchPermissionForm> }>());
+export const doFetchUserPermissions = createAction(type('[Auth] Do Fetch User Permissions'), props<{ id: string, requestCriteria: RequestCriteria<PermissionSearch> }>());
 export const doFetchUserPermissionsSuccess = createAction(type('[Auth] Do Fetch User Permissions Success'), props<{ permissions: Permission[] }>());
 export const doFetchUserPermissionsFail = createAction(type('[Auth] Do Fetch User Permissions Fail'), props<{ error: any }>());
 

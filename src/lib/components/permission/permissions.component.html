@@ -1,20 +1,14 @@
 <page-title [title]="'Permissions'"></page-title>
-<page-actions
-  (search)="search()"
-  (view)="showChildComponent(childComponents.permissionDetails)"
-  [disabled]="{
-    view: selected.length !== 1
-  }"
-></page-actions>
+<page-actions (searchChange)="onSearch($event)"></page-actions>
 
-<app-offcanvas id="permissions-forms" title="Permission Detail" [visible]="childSelected" (visibleChange)="hideChildComponent($event)" >
-  <auth-permission-detail *ngIf="isComponentSelected(childComponents.permissionDetails)" [id]="selected.length && selected[0].id" />
+<app-offcanvas id="permissions-forms" title="Permission Detail" [visible]="childSelected" (visibleChange)="hideChildComponent($event)">
+  <auth-permission-detail *ngIf="isComponentSelected(childComponents.permissionDetails)"/>
 </app-offcanvas>
 
 <div class="animated fadeIn dt" #dtContainer>
   <div class="row">
     <div class="col-md-12 my-2">
-      <span class="float-end">Total: {{ pagination?.total ?? data.length }}</span>
+      <span class="float-end">Total: {{ pagination?.total }}</span>
     </div>
   </div>
   <div class="row">
@@ -23,28 +17,35 @@
         <div class="card-body">
           <ngx-datatable
             class="material"
-            [rows]="data"
+            [rows]="sb.permissionsData$ | async"
             [columns]="[{ name: 'name' }, { description: 'description' }]"
             [columnMode]="'force'"
             [headerHeight]="50"
             [footerHeight]="50"
             [rowHeight]="'auto'"
             [externalPaging]="true"
-            [count]="pagination?.total ?? data.length"
+            [count]="pagination?.total"
             [offset]="getOffsetFromPagination()"
             [limit]="pagination?.perPage ?? 10"
             [selected]="selected"
             [selectionType]="'checkbox'"
-            (activate)="onActivate($event)"
             (select)="onSelect($event)"
             (page)="setPage($event)"
             (sort)="setSorting($event)"
           >
-            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true"></ngx-datatable-column>
+            <ngx-datatable-column
+              [width]="30"
+              [sortable]="false"
+              [canAutoResize]="false"
+              [draggable]="false"
+              [resizeable]="false"
+              [headerCheckboxable]="true"
+              [checkboxable]="true"
+            ></ngx-datatable-column>
 
             <ngx-datatable-column name="Name" [width]="100">
-              <ng-template let-value="value" ngx-datatable-cell-template>
-                {{ value }}
+              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                <a (click)="view(row)">{{ value }} ({{ row.name }})</a>
               </ng-template>
             </ngx-datatable-column>
 

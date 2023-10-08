@@ -11,7 +11,7 @@ export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit
 
   constructor(
     injector: Injector,
-    private _sandbox: AuthorizationSandbox
+    private sb: AuthorizationSandbox
   ) {
     super(injector);
   }
@@ -19,15 +19,14 @@ export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit
 
   ngOnInit(): void {
     this.addSubscriptions();
-    this.formGroup = new RoleForm({ name: '', displayName: '', description: '', guardName: 'api' }).createForm();
+    this.formGroup = new RoleForm({ name: '', displayName: '', description: '', guardName: 'api' }).create();
   }
 
 
   addSubscriptions() {
     this.subscriptions.push(
-      this._sandbox.roleData$.subscribe((role: Role) => {
+      this.sb.selectedRole$.subscribe((role: Role) => {
         if (role) {
-          this.notify.success('Role successfully created', 'Success!');
           this.created.emit(role);
         }
       })
@@ -36,7 +35,7 @@ export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit
 
   save() {
     if (this.formGroup.valid) {
-      this._sandbox.createRole(new Role(this.formGroup.value));
+      this.sb.createRole(new Role(this.formGroup.value));
     }
   }
 }

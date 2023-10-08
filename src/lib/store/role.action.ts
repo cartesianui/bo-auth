@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { type, RequestCriteria } from '@cartesianui/core';
-import { Role, SearchRoleForm } from '../models';
+import { Role, RoleSearch } from '../models';
 
 /**
  * Fetch Role Actions
  */
-export const doFetchRole = createAction(type('[Auth] Do Fetch Role'), props<{ id: string; criteria: RequestCriteria<SearchRoleForm> }>());
+export const doFetchRole = createAction(type('[Auth] Do Fetch Role'), props<{ id: string; criteria: RequestCriteria<RoleSearch> }>());
 export const doFetchRoleSuccess = createAction(type('[Auth] Do Fetch Role Success'), props<{ role: Role }>());
 export const doFetchRoleFail = createAction(type('[Auth] Do Fetch Role Fail'), props<{ error: any }>());
 
@@ -19,14 +19,14 @@ export const doCreateRoleFail = createAction(type('[Auth] Do Create Role Fail'),
 /**
  * Fetch Roles Actions
  */
-export const doFetchRoles = createAction(type('[Auth] Do Fetch Roles'), props<{ requestCriteria: RequestCriteria<SearchRoleForm> }>());
+export const doFetchRoles = createAction(type('[Auth] Do Fetch Roles'), props<{ requestCriteria: RequestCriteria<RoleSearch> }>());
 export const doFetchRolesSuccess = createAction(type('[Auth] Do Fetch Roles Success'), props<{ roles: Role[] }>());
 export const doFetchRolesFail = createAction(type('[Auth] Do Fetch Roles Fail'), props<{ error: any }>());
 
 /**
  * Fetch User Roles Actions
  */
-export const doFetchUserRoles = createAction(type('[Auth] Do Fetch User Roles'), props<{ id: string, requestCriteria: RequestCriteria<SearchRoleForm> }>());
+export const doFetchUserRoles = createAction(type('[Auth] Do Fetch User Roles'), props<{ id: string, requestCriteria: RequestCriteria<RoleSearch> }>());
 export const doFetchUserRolesSuccess = createAction(type('[Auth] Do Fetch User Roles Success'), props<{ roles: Role[] }>());
 export const doFetchUserRolesFail = createAction(type('[Auth] Do Fetch User Roles Fail'), props<{ error: any }>());
 

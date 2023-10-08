@@ -22,6 +22,8 @@ import { PermissionComponent } from './components/permission/detail/permission.c
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BadgeModule } from "@coreui/angular";
+import * as fromRole from './store/role/role.reducer';
+import * as fromPermissions from './store/permission/permission.reducer';
 
 const components = [ AuthorizationComponent, RolesComponent, RoleFormComponent, PermissionsComponent, RoleComponent, PermissionComponent];
 const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
@@ -41,7 +43,9 @@ const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
     StoreModule.forFeature(authFeatureKey, authReducers),
     EffectsModule.forFeature([AuthEffects]),
     TabsModule.forRoot(),
-    BadgeModule
+    BadgeModule,
+    StoreModule.forFeature(fromRole.rolesFeatureKey, fromRole.reducer),
+    StoreModule.forFeature(fromPermissions.permissionsFeatureKey, fromPermissions.reducer)
   ],
   exports: [
     ...widgets
