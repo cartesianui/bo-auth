@@ -9,7 +9,7 @@
 ></page-actions>
 
 <app-offcanvas id="role-forms" [title]="childComponentSelected && childComponentSelected?.title" [visible]="childSelected" (visibleChange)="hideChildComponent($event)">
-  <auth-create-role *ngIf="isComponentSelected(childComponents.createRole)" (created)="onCreate($event)" />
+  <auth-create-role *ngIf="isComponentSelected(childComponents.createRole)" (created)="onCreated()" />
   <auth-edit-role *ngIf="isComponentSelected(childComponents.editRole)" />
 </app-offcanvas>
 
@@ -42,7 +42,7 @@
 
         <ngx-datatable-column name="display Name" [flexGrow]="3" [minWidth]="200">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <a (click)="edit(row)">{{ value }} ({{ row.name }})</a>
+            <a href="javascript:;" (click)="edit(row)">{{ value }} ({{ row.name }})</a>
           </ng-template>
         </ngx-datatable-column>
 

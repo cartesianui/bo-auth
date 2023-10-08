@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Body, Criteria, DefaultHeaders, DELETE, GET, HttpService, Path, POST, RequestCriteria,PUT, Adapter } from '@cartesianui/core';
+import { Body, Criteria, DefaultHeaders, DELETE, GET, HttpService, Path, POST, RequestCriteria, PUT } from '@cartesianui/core';
 import { Role, RoleSearch } from '../models';
 
 @Injectable()
@@ -47,9 +47,8 @@ export class AuthHttpService extends HttpService {
     return null;
   }
 
-
   @POST('/roles')
-  public createRole(@Body Role): Observable<any> {
+  public createRole(@Body form: Role): Observable<any> {
     return null;
   }
 

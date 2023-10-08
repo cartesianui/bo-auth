@@ -3,7 +3,7 @@ import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 import { Permission } from '../../models';
 import { PermissionActions } from './permission.actions';
-import { EntityStateExtended, updateMetaState } from '@cartesianui/common';
+import { EntityStateExtended, requestDefault, updateMetaState } from '@cartesianui/common';
 
 export const permissionsFeatureKey = 'permissions';
 
@@ -16,9 +16,9 @@ export const adapter: EntityAdapter<Permission> = createEntityAdapter<Permission
 export const initialState: PermissionState = adapter.getInitialState({
   selected: null,
   meta: null,
-  loading: false,
-  loaded: false,
-  failed: false
+  request: requestDefault,
+  creation: requestDefault,
+  updation: requestDefault
 });
 
 export const reducer = createReducer(
@@ -45,9 +45,9 @@ export const permissionsFeature = createFeature({
     ...adapter.getSelectors(selectPermissionsState),
     meta: createSelector(selectPermissionsState, (state: PermissionState) => state.meta),
     selected: createSelector(selectPermissionsState, (state: PermissionState) => state.selected),
-    loading: createSelector(selectPermissionsState, (state: PermissionState) => state.loaded),
-    loaded: createSelector(selectPermissionsState, (state: PermissionState) => state.loaded),
-    failed: createSelector(selectPermissionsState, (state: PermissionState) => state.failed),
+    request: createSelector(selectPermissionsState, (state: PermissionState) => state.request),
+    creation: createSelector(selectPermissionsState, (state: PermissionState) => state.creation),
+    updation: createSelector(selectPermissionsState, (state: PermissionState) => state.updation),
     entities: createSelector(selectPermissionsState, (state: PermissionState) => Object.values(state.entities))
   })
 });

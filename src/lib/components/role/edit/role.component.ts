@@ -1,9 +1,8 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BaseComponent, FormBaseComponent } from '@cartesianui/common';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnDestroy } from '@angular/core';
+import { FormBaseComponent } from '@cartesianui/common';
 import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
-import { Permission, Role, RolePermissions, PermissionSearch, RoleSearch, RoleForm } from '../../../models';
+import { Permission, Role, RolePermissions, PermissionSearch, RoleForm } from '../../../models';
 
 @Component({
   selector: 'auth-edit-role',
@@ -11,8 +10,6 @@ import { Permission, Role, RolePermissions, PermissionSearch, RoleSearch, RoleFo
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class RoleComponent extends FormBaseComponent<Role> implements AfterViewInit, OnDestroy {
-  // @Input() id: string;
-  // @Input()
   role: Role;
   permissionsToAttach: Permission[] = [];
   permissionsToRevoke: Permission[] = [];

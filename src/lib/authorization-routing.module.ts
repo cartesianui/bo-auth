@@ -3,9 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthorizationComponent } from './authorization.component';
 import { RolesComponent } from './components/role/roles.component';
 import { PermissionsComponent } from './components/permission/permissions.component';
-import { RoleComponent } from './components/role/edit/role.component';
-import { RoleFormComponent } from './components/role/create/create-role.component';
-import { PermissionComponent } from './components/permission/detail/permission.component';
 
 const routes: Routes = [
   {

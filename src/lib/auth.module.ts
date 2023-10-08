@@ -9,7 +9,6 @@ import { StoreModule } from '@ngrx/store';
 import { CommonModule as CartesianCommonModule } from '@cartesianui/common';
 import { FormsModule as CartesianFormsModule } from '@cartesianui/forms';
 import { BoLayoutModule } from '@cartesianui/coreui';
-import { authFeatureKey, authReducers } from './store/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/auth.effect';
 import { AuthHttpService } from './shared/auth-http.service';
@@ -40,10 +39,9 @@ const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
     NgxDatatableModule,
     TypeaheadModule,
     FormsModule,
-    StoreModule.forFeature(authFeatureKey, authReducers),
-    EffectsModule.forFeature([AuthEffects]),
     TabsModule.forRoot(),
     BadgeModule,
+    EffectsModule.forFeature([AuthEffects]),
     StoreModule.forFeature(fromRole.rolesFeatureKey, fromRole.reducer),
     StoreModule.forFeature(fromPermissions.permissionsFeatureKey, fromPermissions.reducer)
   ],

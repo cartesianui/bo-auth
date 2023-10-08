@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role, RoleSearch } from '../../models';
@@ -15,7 +15,6 @@ type ChildComponent = typeof childComponents;
   templateUrl: './roles.component.html'
 })
 export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
-  
   override childComponents: ChildComponent = childComponents;
 
   constructor(
@@ -61,9 +60,9 @@ export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, 
     });
   }
 
-  onCreate(role: Role) {
+  onCreated() {
     this.list();
-    this.edit(role);
+    this.showChildComponent(this.childComponents.editRole);
   }
 
   edit(role: Role) {
