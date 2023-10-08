@@ -18,7 +18,6 @@
         [count]="rows?.length"
         [limit]="5"
         [selectionType]="'checkbox'"
-        (activate)="onActivate($event)"
         (select)="onSelect($event)"
       >
         <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true"></ngx-datatable-column>

@@ -1,43 +1,38 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
-import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { Role, SearchRoleForm } from '../../models';
+import { IRole, Role, RoleSearch } from '../../models';
+
+const childComponents = {
+  createRole: { id: 'createRole', title: 'Create Role' },
+  editRole: { id: 'editRole', title: 'Edit Role' }
+} as const;
+
+type ChildComponent = typeof childComponents;
 
 @Component({
   selector: 'auth-roles',
   templateUrl: './roles.component.html'
 })
-export class RolesComponent extends ListingControlsComponent<Role, SearchRoleForm> implements OnInit, AfterViewInit, OnDestroy {
+export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+  override childComponents: ChildComponent = childComponents;
 
-  @Input() user: string =  null;
-
-  constructor(protected _sandbox: AuthorizationSandbox, injector: Injector) {
+  constructor(
+    protected sb: AuthorizationSandbox,
+    injector: Injector
+  ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.initCriteria(SearchRoleForm);
+    this.initCriteria(RoleSearch);
+    this.hydrateSearchCriteria();
     this.addSubscriptions();
-  }
-
-  ngAfterViewInit(): void {
-    this.reload();
-  }
-
-  ngOnDestroy() {
-    this.removeSubscriptions();
   }
 
   addSubscriptions() {
     this.subscriptions.push(
-      this._sandbox.rolesFetchData$.subscribe((data: Role[]) => {
-        this.data = data;
-        this.completeLoading();
-      })
-    );
-    this.subscriptions.push(
-      this._sandbox.rolesFetchMeta$.subscribe((meta: any) => {
+      this.sb.rolesMetaData$.subscribe((meta: any) => {
         if (meta) {
           this.pagination = meta ? meta.pagination : null;
         }
@@ -46,29 +41,32 @@ export class RolesComponent extends ListingControlsComponent<Role, SearchRoleFor
   }
 
   list(): void {
-    this.startLoading();
-    if(this.user) {
-      this._sandbox.fetchUserRoles(this.user, this.criteria);
-    } else {
-      this._sandbox.fetchRoles(this.criteria);
-    }
+    this.sb.fetchRoles(this.criteria);
   }
 
-  search() {
-    this.setPage(1);
-    if (this.searchText) {
-      this.criteria.where('name', 'like', this.searchText);
-    } else {
-      this.criteria.where('name', 'like', '');
-    } // TODO: Remove where
+  onSearch($event: { text: string }) {
+    this.criteria.page(1);
+    this.criteria.setSearchField('name', $event.text);
+    this.appendSearchCriteriaToUrl();
     this.list();
   }
 
-  create() {
-    this.router.navigateByUrl('/authorization/roles/create')
+  onDelete() {
+    this.message.confirm('Are you sure you want to delete this record?', 'Confirm Deletion', (confirmed) => {
+      if (confirmed) {
+        this.sb.deleteRole(this.selected[0].id);
+        this.selected = [];
+      }
+    });
   }
 
-  delete() {}
+  onCreated() {
+    this.list();
+    this.showChildComponent(this.childComponents.editRole);
+  }
 
-  onActivate(event) {}
+  edit(role: Role) {
+    this.sb.selectRole(role);
+    this.showChildComponent(this.childComponents.editRole);
+  }
 }

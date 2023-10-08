@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Body, Criteria, DefaultHeaders, DELETE, GET, HttpService, Path, POST, RequestCriteria, Adapter } from '@cartesianui/core';
-import { SearchRoleForm } from '../models';
+import { Body, Criteria, DefaultHeaders, DELETE, GET, HttpService, Path, POST, RequestCriteria, PUT } from '@cartesianui/core';
+import { Role, RoleSearch } from '../models';
 
 @Injectable()
 @DefaultHeaders({
@@ -43,17 +43,22 @@ export class AuthHttpService extends HttpService {
   }
 
   @GET('/roles/{id}')
-  public fetchRoleById(@Path('id') id: string, @Criteria criteria: RequestCriteria<SearchRoleForm>): Observable<any> {
+  public fetchRole(@Path('id') id: string, @Criteria criteria: RequestCriteria<RoleSearch>): Observable<any> {
     return null;
   }
 
   @POST('/roles')
-  public createRole(@Body form): Observable<any> {
+  public createRole(@Body form: Role): Observable<any> {
+    return null;
+  }
+
+  @PUT('/roles/{id}')
+  public updateRole(@Path('id') id: string, @Body Role): Observable<any> {
     return null;
   }
 
   @DELETE('/roles/{id}')
-  public deleteRoleById(@Path('id') id: string): Observable<any> {
+  public deleteRole(@Path('id') id: string): Observable<any> {
     return null;
   }
 

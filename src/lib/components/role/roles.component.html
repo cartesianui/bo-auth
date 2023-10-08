@@ -1,13 +1,18 @@
 <page-title [title]="'Roles'" [breadcrumb]="true"></page-title>
 <page-actions
-  (search)="search()"
-  (delete)="delete()"
-  (create)="create()"
+  (searchChange)="onSearch($event)"
+  (delete)="onDelete()"
+  (create)="showChildComponent(childComponents.createRole)"
   [disabled]="{
-    delete: selected.length === 0
+    delete: selected.length !== 1
   }"
->
-</page-actions>
+></page-actions>
+
+<app-offcanvas id="role-forms" [title]="childComponentSelected && childComponentSelected?.title" [visible]="childSelected" (visibleChange)="hideChildComponent($event)">
+  <auth-create-role *ngIf="isComponentSelected(childComponents.createRole)" (created)="onCreated()" />
+  <auth-edit-role *ngIf="isComponentSelected(childComponents.editRole)" />
+</app-offcanvas>
+
 <div class="animated fadeIn dt" #dtContainer>
   <div class="row">
     <div class="col-md-12 my-2">
@@ -18,7 +23,7 @@
     <div class="card-body">
       <ngx-datatable
         class="material"
-        [rows]="data"
+        [rows]="sb.rolesData$ | async"
         [columns]="[{ select: 'select' }, { displayName: 'displayName' }, { description: 'description' }]"
         [columnMode]="'force'"
         [headerHeight]="50"
@@ -30,7 +35,6 @@
         [limit]="pagination.perPage"
         [selected]="selected"
         [selectionType]="'checkbox'"
-        (activate)="onActivate($event)"
         (select)="onSelect($event)"
         (page)="setPage($event)"
       >
@@ -38,7 +42,7 @@
 
         <ngx-datatable-column name="display Name" [flexGrow]="3" [minWidth]="200">
           <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <a routerLink="{{ row.id }}">{{ value }}</a>
+            <a href="javascript:;" (click)="edit(row)">{{ value }} ({{ row.name }})</a>
           </ng-template>
         </ngx-datatable-column>
 
