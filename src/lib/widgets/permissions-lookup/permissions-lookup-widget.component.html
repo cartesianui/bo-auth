@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="card mt-2">
+    <div class="card-header">
+      <strong>Attach Permissions</strong>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <lookup-widget [options]="sb.permissionsData$ | async" [ignoreOptions]="ignoreOptions" [(selected)]="selected">
+          <small>Select permissions to attach</small>
+        </lookup-widget>
+      </div>
+    </div>
+  </div>
+</div>

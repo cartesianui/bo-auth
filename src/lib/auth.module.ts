@@ -14,18 +14,18 @@ import { AuthEffects } from './store/auth.effect';
 import { AuthHttpService } from './shared/auth-http.service';
 import { AuthorizationSandbox } from './authorization.sandbox';
 import { PermissionsComponent } from './components/permission/permissions.component';
-import { PermissionsWidgetComponent, RolesWidgetComponent } from "./widgets";
+import { PermissionsWidgetComponent, RolesWidgetComponent, RolesLookupWidgetComponent, PermissionsLookupWidgetComponent } from './widgets';
 import { RoleComponent } from './components/role/edit/role.component';
 import { RoleFormComponent } from './components/role/create/create-role.component';
 import { PermissionComponent } from './components/permission/detail/permission.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { BadgeModule } from "@coreui/angular";
+import { BadgeModule } from '@coreui/angular';
 import * as fromRole from './store/role/role.reducer';
 import * as fromPermissions from './store/permission/permission.reducer';
 
-const components = [ AuthorizationComponent, RolesComponent, RoleFormComponent, PermissionsComponent, RoleComponent, PermissionComponent];
-const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
+const components = [AuthorizationComponent, RolesComponent, RoleFormComponent, PermissionsComponent, RoleComponent, PermissionComponent];
+const widgets = [PermissionsWidgetComponent, RolesWidgetComponent, RolesLookupWidgetComponent, PermissionsLookupWidgetComponent];
 
 @NgModule({
   declarations: [...components, ...widgets],
@@ -45,9 +45,7 @@ const widgets = [ PermissionsWidgetComponent, RolesWidgetComponent];
     StoreModule.forFeature(fromRole.rolesFeatureKey, fromRole.reducer),
     StoreModule.forFeature(fromPermissions.permissionsFeatureKey, fromPermissions.reducer)
   ],
-  exports: [
-    ...widgets
-  ],
+  exports: [...widgets],
   providers: [AuthHttpService, AuthorizationSandbox]
 })
 export class AuthModule {
@@ -61,7 +59,7 @@ export class AuthModule {
   static forFeature(): ModuleWithProviders<AuthModule> {
     return {
       ngModule: AuthModule,
-      providers: [],
-    }
+      providers: []
+    };
   }
 }

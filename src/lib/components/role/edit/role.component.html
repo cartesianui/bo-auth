@@ -17,16 +17,22 @@
           </div>
           <div class="card-body">
             <div class="form-group required">
-              <label class="form-label">Name</label>
-              <input type="text" formControlName="name" class="form-control"  placeholder="Name" readonly noWhiteSpace required/>
+              <with-validation>
+                <label class="form-label">Name</label>
+                <input validate type="text" formControlName="name" class="form-control" placeholder="Name" readonly noWhiteSpace required />
+              </with-validation>
             </div>
             <div class="form-group required mt-2">
-              <label class="form-label">Display Name</label>
-              <input type="text" formControlName="displayName" class="form-control" placeholder="Display Name" readonly required/>
+              <with-validation>
+                <label class="form-label">Display Name</label>
+                <input validate type="text" formControlName="displayName" class="form-control" placeholder="Display Name" readonly required />
+              </with-validation>
             </div>
             <div class="form-group required mt-2">
-              <label class="form-label">Description</label>
-              <textarea type="text" formControlName="description" class="form-control" readonly required></textarea>
+              <with-validation>
+                <label class="form-label">Description</label>
+                <textarea validate type="text" formControlName="description" class="form-control" readonly required></textarea>
+              </with-validation>
             </div>
           </div>
         </div>
@@ -36,7 +42,7 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <lookup-widget [options]="permissionLookupOptions" [ignoreOptions]="role?.permissions?.data" [(selected)]="permissionsToAttach" >
+              <lookup-widget [options]="permissionLookupOptions" [ignoreOptions]="role?.permissions?.data" [(selected)]="permissionsToAttach">
                 <small>Select permissions to attach</small>
               </lookup-widget>
             </div>
@@ -44,7 +50,7 @@
         </div>
       </div>
       <div class="col-md-12">
-        <div class="card">
+        <div class="card mt-2">
           <div class="card-header">
             <strong>Role Permissions</strong>
           </div>

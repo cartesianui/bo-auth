@@ -27,13 +27,13 @@ export const reducer = createReducer(
     return { ...state, creation: { ...requestStarted } };
   }),
   on(RoleActions.createSuccess, (state, { role }) => {
-    return { ...state, seledted: role, creation: { ...requestCompleted } };
+    return { ...state, selected: role, creation: { ...requestCompleted } };
   }),
   on(RoleActions.createFailure, (state, { errors, message }) => {
     return { ...state, creation: { ...requestFailed } };
   }),
   on(RoleActions.updateSuccess, (state, { role }) => {
-    return { ...state, seledted: role, updation: { ...requestCompleted } };
+    return { ...state, selected: role, updation: { ...requestCompleted } };
   }),
   on(RoleActions.updateFailure, (state, { errors, message }) => {
     return { ...state, updation: { ...requestFailed } };

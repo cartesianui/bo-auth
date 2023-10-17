@@ -61,7 +61,7 @@ export class AuthorizationSandbox extends Sandbox {
    *
    * @param form: RolePermissions
    */
-  syncPermissions(form: RolePermissions) {
+  syncPermissions = (form: RolePermissions) => {
     this.store.dispatch(RoleActions.syncPermissions({ form }));
   }
 
