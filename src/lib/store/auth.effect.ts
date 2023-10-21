@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of, catchError } from 'rxjs';
 import { Update } from '@ngrx/entity';
-import { IAxisResponse } from '@cartesianui/core';
+import { ICartesianResponse } from '@cartesianui/core';
 import { map, switchMap } from 'rxjs/operators';
 import { AuthHttpService } from '../shared/auth-http.service';
 import { RoleActions } from './role/role.actions';
@@ -20,7 +20,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(RoleActions.fetchRoles),
       map(({ criteria }) => criteria),
-      switchMap((criteria) => this.httpService.fetchRoles(criteria).pipe(map(({ data, meta }: IAxisResponse) => RoleActions.loadRoles({ roles: data, meta: meta }))))
+      switchMap((criteria) => this.httpService.fetchRoles(criteria).pipe(map(({ data, meta }: ICartesianResponse) => RoleActions.loadRoles({ roles: data, meta: meta }))))
     )
   );
 
@@ -30,8 +30,8 @@ export class AuthEffects {
       map(({ role }) => role),
       switchMap((role) =>
         this.httpService.createRole(role).pipe(
-          map(({ data }: IAxisResponse) => RoleActions.createSuccess({ role: data })),
-          catchError(({ errors, message }: IAxisResponse) => of(RoleActions.createFailure({ errors, message })))
+          map(({ data }: ICartesianResponse) => RoleActions.createSuccess({ role: data })),
+          catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.createFailure({ errors, message })))
         )
       )
     )
@@ -43,8 +43,8 @@ export class AuthEffects {
       map(({ role }) => role),
       switchMap(({ id, changes }: Update<Role>) =>
         this.httpService.updateRole(id as string, changes).pipe(
-          map(({ data }: IAxisResponse) => RoleActions.updateSuccess({ role: data })),
-          catchError(({ errors, message }: IAxisResponse) => of(RoleActions.updateFailure({ errors, message })))
+          map(({ data }: ICartesianResponse) => RoleActions.updateSuccess({ role: data })),
+          catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )
     )
@@ -62,7 +62,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(PermissionActions.fetchPermissions),
       map((action) => action.criteria),
-      switchMap((criteria) => this.httpService.fetchPermissions(criteria).pipe(map(({ data, meta }: IAxisResponse) => PermissionActions.loadPermissions({ permissions: data, meta: meta }))))
+      switchMap((criteria) => this.httpService.fetchPermissions(criteria).pipe(map(({ data, meta }: ICartesianResponse) => PermissionActions.loadPermissions({ permissions: data, meta: meta }))))
     )
   );
 
@@ -72,8 +72,8 @@ export class AuthEffects {
       map(({ form }) => form),
       switchMap((form) =>
         this.httpService.syncPermissions(form).pipe(
-          switchMap(({ data }: IAxisResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
-          catchError(({ errors, message }: IAxisResponse) => of(RoleActions.updateFailure({ errors, message })))
+          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
+          catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )
     )
@@ -85,8 +85,8 @@ export class AuthEffects {
       map(({ form }) => form),
       switchMap((form) =>
         this.httpService.attachPermission(form).pipe(
-          switchMap(({ data }: IAxisResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
-          catchError(({ errors, message }: IAxisResponse) => of(RoleActions.updateFailure({ errors, message })))
+          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
+          catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )
     )
@@ -98,8 +98,8 @@ export class AuthEffects {
       map(({ form }) => form),
       switchMap((form) =>
         this.httpService.detachPermission(form).pipe(
-          switchMap(({ data }: IAxisResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
-          catchError(({ errors, message }: IAxisResponse) => of(RoleActions.updateFailure({ errors, message })))
+          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
+          catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )
     )
