@@ -1,10 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { IError, RequestCriteria } from '@cartesianui/core';
-
-import { Role, RoleSearch } from '../../models';
 import { ResponseMeta } from '@cartesianui/common';
-import { RolePermissions } from 'dist/bo-auth';
+import { Role, RoleSearch, RolePermissions } from '../../models';
 
 export const RoleActions = createActionGroup({
   source: 'Role/API',
