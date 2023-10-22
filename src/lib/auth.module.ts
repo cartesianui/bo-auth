@@ -7,7 +7,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { CommonModule as CartesianCommonModule } from '@cartesianui/common';
-import { FormsModule as CartesianFormsModule } from '@cartesianui/forms';
 import { BoLayoutModule } from '@cartesianui/coreui';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/auth.effect';
@@ -32,7 +31,6 @@ const widgets = [PermissionsWidgetComponent, RolesWidgetComponent, RolesLookupWi
   imports: [
     CommonModule,
     CartesianCommonModule.forFeature(),
-    CartesianFormsModule,
     BoLayoutModule.forFeature(),
     AuthorizationRoutingModule,
     ReactiveFormsModule,
