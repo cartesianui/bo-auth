@@ -1,37 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthorizationComponent } from './authorization.component';
 import { RolesComponent } from './components/role/roles.component';
 import { PermissionsComponent } from './components/permission/permissions.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AuthorizationComponent,
+    redirectTo: 'roles'
+  },
+  {
+    path: 'roles',
+    component: RolesComponent,
     data: {
-      title: 'Authorization'
-    },
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'roles',
-      },
-      {
-        path: 'roles',
-        component: RolesComponent,
-        data: {
-          title: 'Roles'
-        }
-      },
-      {
-        path: 'permissions',
-        component: PermissionsComponent,
-        data: {
-          title: 'Permissions'
-        }
-      }
-    ]
+      title: 'Roles'
+    }
+  },
+  {
+    path: 'permissions',
+    component: PermissionsComponent,
+    data: {
+      title: 'Permissions'
+    }
   }
 ];
 
