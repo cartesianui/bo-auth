@@ -2,7 +2,7 @@
 <page-actions
   (searchChange)="onSearch($event)"
   (delete)="onDelete()"
-  (create)="showChildComponent(childComponents.createRole)"
+  (create)="showChildComponent(childComponents.createRole, 'createRole')"
   [disabled]="{
     delete: selected.length !== 1
   }"

@@ -17,26 +17,35 @@ export const initialState: RoleState = adapter.getInitialState({
   selected: null,
   meta: null,
   request: requestDefault,
-  creation: requestDefault,
-  updation: requestDefault
+  create: requestDefault,
+  update: requestDefault,
+  get: requestDefault,
+  delete: requestDefault
 });
 
 export const reducer = createReducer(
   initialState,
   on(RoleActions.createRole, (state, { role }) => {
-    return { ...state, creation: { ...requestStarted } };
+    return { ...state, create: { ...requestStarted } };
   }),
   on(RoleActions.createSuccess, (state, { role }) => {
-    return { ...state, selected: role, creation: { ...requestCompleted } };
+    return { ...state, selected: role, create: { ...requestCompleted } };
   }),
   on(RoleActions.createFailure, (state, { errors, message }) => {
-    return { ...state, creation: { ...requestFailed } };
+    return { ...state, create: { ...requestFailed } };
   }),
   on(RoleActions.updateSuccess, (state, { role }) => {
-    return { ...state, selected: role, updation: { ...requestCompleted } };
+    return adapter.updateOne(
+      { id: role.id, changes: role }, // 👈 replaces the entity
+      {
+        ...state,
+        selected: role,
+        update: { ...requestCompleted }
+      }
+    );
   }),
   on(RoleActions.updateFailure, (state, { errors, message }) => {
-    return { ...state, updation: { ...requestFailed } };
+    return { ...state, update: { ...requestFailed } };
   }),
   on(RoleActions.selectRole, (state, { role }) => {
     return { ...state, selected: role };
@@ -61,10 +70,10 @@ export const rolesFeature = createFeature({
     meta: createSelector(selectRolesState, (state: RoleState) => state.meta),
     selected: createSelector(selectRolesState, (state: RoleState) => state.selected),
     request: createSelector(selectRolesState, (state: RoleState) => state.request),
-    creation: createSelector(selectRolesState, (state: RoleState) => state.creation),
-    updation: createSelector(selectRolesState, (state: RoleState) => state.updation),
+    create: createSelector(selectRolesState, (state: RoleState) => state.create),
+    update: createSelector(selectRolesState, (state: RoleState) => state.update),
     entities: createSelector(selectRolesState, (state: RoleState) => Object.values(state.entities))
   })
 });
 
-export const { selectIds, selectEntities, selectAll, selectTotal, meta, entities, creation, selected } = rolesFeature;
+export const { selectIds, selectEntities, selectAll, selectTotal, meta, entities, create, selected } = rolesFeature;

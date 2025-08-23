@@ -41,7 +41,7 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
 
   view(permission: Permission) {
     this.sb.selectPermission(permission);
-    this.showChildComponent(this.childComponents.permissionDetails);
+    this.showChildComponent(this.childComponents.permissionDetails, 'permissionDetails');
   }
 
   onSearch($event: { text: string }) {

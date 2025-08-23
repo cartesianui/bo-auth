@@ -55,22 +55,22 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   }
 
   onRevoke() {
-    const permissionsIds = this.permissionsToRevoke.map((permission) => permission.id);
+    const permissionIds = this.permissionsToRevoke.map((permission) => permission.id);
     const form = new RolePermissions({
       roleId: this.role.id,
-      permissionsIds
+      permissionIds
     });
-    this.sb.detachPermissions(form);
+    this.sb.detachPermissions(this.role.id, form);
     this.permissionsToRevoke = [];
   }
 
   onAttach() {
-    const permissionsIds = this.permissionsToAttach.map((permission) => permission.id);
+    const permissionIds = this.permissionsToAttach.map((permission) => permission.id);
     const form = new RolePermissions({
       roleId: this.role.id,
-      permissionsIds
+      permissionIds
     });
-    this.sb.attachPermissions(form);
+    this.sb.attachPermissions(this.role.id, form);
     this.permissionsToAttach = [];
   }
 }

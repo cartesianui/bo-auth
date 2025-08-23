@@ -25,7 +25,7 @@ export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, 
   }
 
   ngOnInit(): void {
-    this.initCriteria(RoleSearch);
+    this.initCriteria(RoleSearch).with('permissions');
     this.hydrateSearchCriteria();
     this.addSubscriptions();
   }
@@ -60,13 +60,13 @@ export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, 
     });
   }
 
-  onCreated() {
+  override onCreated() {
     this.list();
-    this.showChildComponent(this.childComponents.editRole);
+    this.showChildComponent(this.childComponents.editRole, 'editRole');
   }
 
   edit(role: Role) {
     this.sb.selectRole(role);
-    this.showChildComponent(this.childComponents.editRole);
+    this.showChildComponent(this.childComponents.editRole, 'editRole');
   }
 }

@@ -25,8 +25,8 @@ export const RoleActions = createActionGroup({
     'Update Success': props<{ role: Role }>(),
     'Update Failure': props<{ errors: IError, message: string }>(),
     'Fetch Roles': props<{ criteria: RequestCriteria<RoleSearch> }>(),
-    'Sync Permissions': props<{ form: RolePermissions }>(),
-    'Attach Permissions': props<{ form: RolePermissions }>(),
-    'Detach Permissions': props<{ form: RolePermissions }>()
+    'Sync Permissions': props<{ id: string, form: RolePermissions }>(),
+    'Attach Permissions': props<{ id: string, form: RolePermissions }>(),
+    'Detach Permissions': props<{ id: string, form: RolePermissions }>()
   }
 });

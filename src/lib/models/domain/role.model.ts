@@ -1,7 +1,7 @@
 import { ParentModel } from '@cartesianui/common';
 
 export interface IRole {
-  object?: string | undefined;
+  type?: string | undefined;
   id?: string | undefined;
   name?: string | undefined;
   guardName?: string | undefined;
@@ -12,7 +12,7 @@ export interface IRole {
 }
 
 export class Role extends ParentModel implements IRole {
-  object: string;
+  type: string;
   id: string;
   name: string;
   guardName: string;

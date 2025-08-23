@@ -13,7 +13,7 @@ export class AuthorizationSandbox extends Sandbox {
   rolesData$ = this.store.pipe(select(fromRoles.entities));
   rolesMetaData$ = this.store.pipe(select(fromRoles.meta));
   selectedRole$ = this.store.pipe(select(fromRoles.selected));
-  creationState$ = this.store.pipe(select(fromRoles.creation));
+  createState$ = this.store.pipe(select(fromRoles.create));
 
   permissionsData$ = this.store.pipe(select(fromPermissions.entities));
   permissionsMetaData$ = this.store.pipe(select(fromPermissions.meta));
@@ -61,15 +61,15 @@ export class AuthorizationSandbox extends Sandbox {
    *
    * @param form: RolePermissions
    */
-  syncPermissions = (form: RolePermissions) => {
-    this.store.dispatch(RoleActions.syncPermissions({ form }));
+  syncPermissions = (id: string, form: RolePermissions) => {
+    this.store.dispatch(RoleActions.syncPermissions({ id, form }));
   }
 
-  attachPermissions = (form: RolePermissions): void => {
-    this.store.dispatch(RoleActions.attachPermissions({ form }));
+  attachPermissions = (id: string, form: RolePermissions): void => {
+    this.store.dispatch(RoleActions.attachPermissions({ id, form }));
   };
 
-  detachPermissions = (form: RolePermissions): void => {
-    this.store.dispatch(RoleActions.detachPermissions({ form }));
+  detachPermissions = (id: string, form: RolePermissions): void => {
+    this.store.dispatch(RoleActions.detachPermissions({ id, form }));
   };
 }
