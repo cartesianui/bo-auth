@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Sandbox } from '@cartesianui/common';
 import { RequestCriteria } from '@cartesianui/core';
 import { select, Store } from '@ngrx/store';
-import { Role, RolePermissions, PermissionSearch, RoleSearch, Permission } from './models';
+import { Role, RolePermissions, Permission } from './models';
 import { RoleActions } from './store/role/role.actions';
 import { PermissionActions } from './store/permission/permission.actions';
 import * as fromRoles from './store/role/role.reducer';
@@ -26,7 +26,7 @@ export class AuthorizationSandbox extends Sandbox {
     super(injector);
   }
 
-  fetchRoles = (criteria: RequestCriteria<RoleSearch>) => {
+  fetchRoles = (criteria: RequestCriteria) => {
     this.store.dispatch(RoleActions.fetchRoles({ criteria }));
   };
 
@@ -46,7 +46,7 @@ export class AuthorizationSandbox extends Sandbox {
     this.store.dispatch(RoleActions.deleteRole({ id }));
   };
 
-  fetchPermissions = (criteria: RequestCriteria<PermissionSearch>): void => {
+  fetchPermissions = (criteria: RequestCriteria): void => {
     this.store.dispatch(PermissionActions.fetchPermissions({ criteria }));
   };
 

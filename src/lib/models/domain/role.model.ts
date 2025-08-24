@@ -24,4 +24,12 @@ export class Role extends ParentModel implements IRole {
   constructor(data?: IRole) {
     super(data);
   }
+
+  static override get searchForm() {
+    return {
+      id: { column: 'id', operator: '=', value: null, options: { url: false} },
+      name: { column: 'name', operator: 'like', value: null },
+      guardName: { column: 'guard_name', operator: '=', value: 'api', options: { url: false}}
+    };
+  }
 }

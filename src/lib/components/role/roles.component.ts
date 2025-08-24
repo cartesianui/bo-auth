@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { IRole, Role, RoleSearch } from '../../models';
+import { IRole, Role } from '../../models';
 
 const childComponents = {
   createRole: { id: 'createRole', title: 'Create Role' },
@@ -14,7 +14,7 @@ type ChildComponent = typeof childComponents;
   selector: 'auth-roles',
   templateUrl: './roles.component.html'
 })
-export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+export class RolesComponent extends ListingControlsComponent<IRole, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   override childComponents: ChildComponent = childComponents;
 
   constructor(
@@ -25,7 +25,7 @@ export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, 
   }
 
   ngOnInit(): void {
-    this.initCriteria(RoleSearch).with('permissions');
+    this.initCriteria().with('permissions');
     this.hydrateSearchCriteria();
     this.addSubscriptions();
   }

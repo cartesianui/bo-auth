@@ -16,4 +16,12 @@ export class Permission extends ParentModel implements IPermission {
   constructor(data?: IPermission) {
     super(data);
   }
+
+  static override get searchForm() {
+    return {
+      id: { column: 'id', operator: '=', value: null, options: { url: false} },
+      name: { column: 'name', operator: '=', value: null },
+      guardName: { column: 'guard_name', operator: '=', value: "api", options: { url: false} }
+    };
+  }
 }

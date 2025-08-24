@@ -14,4 +14,8 @@ export class RolePermissions extends ParentModel implements IRolePermissions {
   constructor(data?: IRolePermissions) {
     super(data);
   }
+
+  static override get searchForm() {
+    return {};
+  }
 }

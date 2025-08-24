@@ -1,12 +1,12 @@
 import { Component, Injector } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
-import { Role, RoleSearch } from '../../models';
+import { Role } from '../../models';
 
 @Component({
   selector: 'roles-list',
   templateUrl: './roles-widget.component.html'
 })
-export class RolesWidgetComponent extends ListingControlsComponent<Role, RoleSearch> {
+export class RolesWidgetComponent extends ListingControlsComponent<Role> {
   constructor(injector: Injector) {
     super(injector);
   }

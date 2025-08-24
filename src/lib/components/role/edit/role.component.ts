@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnDestroy 
 import { FormBaseComponent } from '@cartesianui/common';
 import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
-import { Permission, Role, RolePermissions, PermissionSearch, RoleForm } from '../../../models';
+import { Permission, Role, RolePermissions, RoleForm } from '../../../models';
 
 @Component({
   selector: 'auth-edit-role',
@@ -15,7 +15,8 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   permissionsToRevoke: Permission[] = [];
   permissionLookupOptions: Permission[] = [];
 
-  permissionCriteria = new RequestCriteria<PermissionSearch>(new PermissionSearch()).limit(500);
+  permissionCriteria = new RequestCriteria().limit(500);
+  //permissionCriteria = new RequestCriteria<PermissionSearch>(new PermissionSearch()).limit(500);
 
   constructor(
     injector: Injector,

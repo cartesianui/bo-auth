@@ -1,13 +1,13 @@
 import { Component, Injector, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { Role, RoleSearch } from '../../models';
+import { Role } from '../../models';
 
 @Component({
   selector: 'roles-lookup',
   templateUrl: './roles-lookup-widget.component.html'
 })
-export class RolesLookupWidgetComponent extends ListingControlsComponent<Role, RoleSearch> implements OnInit {
+export class RolesLookupWidgetComponent extends ListingControlsComponent<Role> implements OnInit {
   @Input() ignoreOptions: Array<Role> = [];
 
   constructor(
@@ -18,7 +18,7 @@ export class RolesLookupWidgetComponent extends ListingControlsComponent<Role, R
   }
 
   ngOnInit(): void {
-    this.initCriteria(RoleSearch).limit(100000);
+    this.initCriteria().limit(100000);
   }
 
   list(): void {
