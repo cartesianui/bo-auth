@@ -1,4 +1,4 @@
-import { ParentModel } from '@cartesianui/common';
+import { BaseModel } from '@cartesianui/common';
 
 export interface IPermission {
   id: string | undefined;
@@ -7,7 +7,7 @@ export interface IPermission {
   displayName: string | undefined;
 }
 
-export class Permission extends ParentModel implements IPermission {
+export class Permission extends BaseModel implements IPermission {
   public id: string;
   public name: string;
   public description: string;
