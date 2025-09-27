@@ -1,5 +1,5 @@
 /*
- * Public API Surface of bo-auth
+ * Public API Surface of admin-auth
  */
 export * from './auth.module';
 export * from './models';
