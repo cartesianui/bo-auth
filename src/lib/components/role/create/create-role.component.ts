@@ -4,8 +4,9 @@ import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Role, RoleForm } from '../../../models';
 
 @Component({
-  selector: 'auth-create-role',
-  templateUrl: './create-role.component.html'
+    selector: 'auth-create-role',
+    templateUrl: './create-role.component.html',
+    standalone: false
 })
 export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit, OnDestroy {
   constructor(

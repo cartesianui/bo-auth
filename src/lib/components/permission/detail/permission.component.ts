@@ -4,8 +4,9 @@ import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission } from '../../../models';
 
 @Component({
-  selector: 'auth-permission-detail',
-  templateUrl: './permission.component.html'
+    selector: 'auth-permission-detail',
+    templateUrl: './permission.component.html',
+    standalone: false
 })
 export class PermissionComponent extends BaseComponent implements AfterViewInit {
   permission: Permission;

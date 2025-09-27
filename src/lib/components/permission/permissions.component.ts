@@ -10,8 +10,9 @@ const permissionChildComponents = {
 type PermissionChildComponent = typeof permissionChildComponents;
 
 @Component({
-  selector: 'auth-permissions',
-  templateUrl: './permissions.component.html'
+    selector: 'auth-permissions',
+    templateUrl: './permissions.component.html',
+    standalone: false
 })
 export class PermissionsComponent extends ListingControlsComponent<Permission, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   

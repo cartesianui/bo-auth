@@ -11,8 +11,9 @@ const childComponents = {
 type ChildComponent = typeof childComponents;
 
 @Component({
-  selector: 'auth-roles',
-  templateUrl: './roles.component.html'
+    selector: 'auth-roles',
+    templateUrl: './roles.component.html',
+    standalone: false
 })
 export class RolesComponent extends ListingControlsComponent<IRole, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   override childComponents: ChildComponent = childComponents;

@@ -4,8 +4,9 @@ import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Role } from '../../models';
 
 @Component({
-  selector: 'roles-lookup',
-  templateUrl: './roles-lookup-widget.component.html'
+    selector: 'roles-lookup',
+    templateUrl: './roles-lookup-widget.component.html',
+    standalone: false
 })
 export class RolesLookupWidgetComponent extends ListingControlsComponent<Role> implements OnInit {
   @Input() ignoreOptions: Array<Role> = [];

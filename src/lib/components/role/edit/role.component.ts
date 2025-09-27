@@ -5,9 +5,10 @@ import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission, Role, RolePermissions, RoleForm } from '../../../models';
 
 @Component({
-  selector: 'auth-edit-role',
-  templateUrl: './role.component.html',
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'auth-edit-role',
+    templateUrl: './role.component.html',
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class RoleComponent extends FormBaseComponent<Role> implements AfterViewInit, OnDestroy {
   role: Role;

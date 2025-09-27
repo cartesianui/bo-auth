@@ -4,8 +4,9 @@ import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
 
 @Component({
-  selector: 'permissions-lookup',
-  templateUrl: './permissions-lookup-widget.component.html'
+    selector: 'permissions-lookup',
+    templateUrl: './permissions-lookup-widget.component.html',
+    standalone: false
 })
 export class PermissionsLookupWidgetComponent extends ListingControlsComponent<Permission> implements OnInit {
   @Input() ignoreOptions: Array<Permission> = [];
