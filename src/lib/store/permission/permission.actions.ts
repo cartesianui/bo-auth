@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { RequestCriteria } from '@cartesianui/core';
+import { RequestCriteriaOuput } from '@cartesianui/core';
 
 import { Permission } from '../../models';
 import { ResponseMeta } from '@cartesianui/common';
@@ -10,7 +10,7 @@ export const PermissionActions = createActionGroup({
   events: {
     'Select Permission': props<{ permission: Permission }>(),
     'Create Permission': props<{ permission: Permission }>(),
-    'Fetch Permissions': props<{ criteria: RequestCriteria }>(),
+    'Fetch Permissions': props<{ criteria: RequestCriteriaOuput }>(),
     'Load Permissions': props<{ permissions: Permission[], meta: ResponseMeta }>(),
     'Add Permission': props<{ permission: Permission }>(),
     'Upsert Permission': props<{ permission: Permission }>(),

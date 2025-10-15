@@ -3,12 +3,14 @@ import { FormBaseComponent } from '@cartesianui/common';
 import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission, Role, RolePermissions, RoleForm } from '../../../models';
+import { AUTH_WIDGETS, FORM_IMPORTS } from '../../../authorization.imports';
 
 @Component({
     selector: 'auth-edit-role',
     templateUrl: './role.component.html',
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    imports: [...FORM_IMPORTS, ...AUTH_WIDGETS],
+    standalone: true
 })
 export class RoleComponent extends FormBaseComponent<Role> implements AfterViewInit, OnDestroy {
   role: Role;
@@ -17,7 +19,6 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   permissionLookupOptions: Permission[] = [];
 
   permissionCriteria = new RequestCriteria().limit(500);
-  //permissionCriteria = new RequestCriteria<PermissionSearch>(new PermissionSearch()).limit(500);
 
   constructor(
     injector: Injector,
@@ -47,7 +48,7 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   }
 
   loadPermissions() {
-    this.sb.fetchPermissions(this.permissionCriteria);
+    this.sb.fetchPermissions(this.permissionCriteria.toHttpParams());
   }
 
   onSave() {

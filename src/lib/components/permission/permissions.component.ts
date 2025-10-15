@@ -2,6 +2,8 @@ import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
+import { LISTING_IMPORTS } from '../../authorization.imports';
+import { PermissionComponent } from './detail/permission.component';
 
 const permissionChildComponents = {
   permissionDetails: 'permissionDetails'
@@ -12,7 +14,8 @@ type PermissionChildComponent = typeof permissionChildComponents;
 @Component({
     selector: 'auth-permissions',
     templateUrl: './permissions.component.html',
-    standalone: false
+    imports: [...LISTING_IMPORTS, PermissionComponent],
+    standalone: true
 })
 export class PermissionsComponent extends ListingControlsComponent<Permission, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   
@@ -47,12 +50,12 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
-    this.criteria.setSearchField('name', $event.text);
+    this.criteria.updateForm('name', $event.text);
     this.appendSearchCriteriaToUrl();
     this.list();
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria);
+    this.sb.fetchPermissions(this.criteria.toHttpParams());
   }
 }

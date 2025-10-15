@@ -2,11 +2,15 @@ import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormBaseComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Role, RoleForm } from '../../../models';
+import { FORM_IMPORTS } from '../../../authorization.imports';
 
 @Component({
     selector: 'auth-create-role',
     templateUrl: './create-role.component.html',
-    standalone: false
+    imports: [
+      ...FORM_IMPORTS
+    ],
+    standalone: true
 })
 export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit, OnDestroy {
   constructor(

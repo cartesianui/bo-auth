@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Body, Criteria, DefaultHeaders, DELETE, GET, HttpService, Path, POST, RequestCriteria, PUT } from '@cartesianui/core';
+import { Body, Criteria, DefaultHeaders, DELETE, GET, HttpService, Path, POST, RequestCriteriaOuput, PUT } from '@cartesianui/core';
 import { Role } from '../models';
 import { AuthorizationAdapter } from './authorization.adapter';
 
@@ -13,7 +13,7 @@ export class AuthHttpService extends HttpService {
 
   // Authorization: User Routes
   @GET('/users/{id}/roles')
-  public fetchUserRoles(@Path('id') id: string, @Criteria criteria: RequestCriteria): Observable<any> {
+  public fetchUserRoles(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -33,7 +33,7 @@ export class AuthHttpService extends HttpService {
   }
 
   @GET('/users/{id}/permissions')
-  public fetchUserPermissions(@Path('id') id: string, @Criteria criteria: RequestCriteria): Observable<any> {
+  public fetchUserPermissions(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -49,12 +49,12 @@ export class AuthHttpService extends HttpService {
 
   // Authorization: Role Routes
   @GET('/roles')
-  public fetchRoles(@Criteria criteria: RequestCriteria): Observable<any> {
+  public fetchRoles(@Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
   @GET('/roles/{id}')
-  public fetchRole(@Path('id') id: string, @Criteria criteria: RequestCriteria): Observable<any> {
+  public fetchRole(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -74,7 +74,7 @@ export class AuthHttpService extends HttpService {
   }
 
   @GET('/roles/{id}/permissions')
-  public fetchRolePermissions(@Path('id') id: string, @Criteria criteria: RequestCriteria): Observable<any> {
+  public fetchRolePermissions(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -95,7 +95,7 @@ export class AuthHttpService extends HttpService {
   
 
   @GET('/permissions')
-  public fetchPermissions(@Criteria criteria: RequestCriteria): Observable<any> {
+  public fetchPermissions(@Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 

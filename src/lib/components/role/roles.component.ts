@@ -2,6 +2,9 @@ import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role } from '../../models';
+import { LISTING_IMPORTS } from '../../authorization.imports';
+import { RoleComponent } from './edit/role.component';
+import { RoleFormComponent } from './create/create-role.component';
 
 const childComponents = {
   createRole: { id: 'createRole', title: 'Create Role' },
@@ -13,7 +16,12 @@ type ChildComponent = typeof childComponents;
 @Component({
     selector: 'auth-roles',
     templateUrl: './roles.component.html',
-    standalone: false
+    imports: [
+      ...LISTING_IMPORTS,
+      RoleComponent,
+      RoleFormComponent
+    ],
+    standalone: true
 })
 export class RolesComponent extends ListingControlsComponent<IRole, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   override childComponents: ChildComponent = childComponents;
@@ -42,12 +50,12 @@ export class RolesComponent extends ListingControlsComponent<IRole, ChildCompone
   }
 
   list(): void {
-    this.sb.fetchRoles(this.criteria);
+    this.sb.fetchRoles(this.criteria.toHttpParams());
   }
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
-    this.criteria.setSearchField('name', $event.text);
+    this.criteria.updateForm('name', $event.text);
     this.appendSearchCriteriaToUrl();
     this.list();
   }

@@ -1,7 +1,7 @@
 /*
  * Public API Surface of admin-auth
  */
-export * from './auth.module';
+export * from './authorization.routes'
 export * from './models';
 export * from './authorization.sandbox';
 export * from './widgets';

@@ -2,11 +2,14 @@ import { Component, Injector, Input, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
+import { FORM_IMPORTS } from '../../authorization.imports';
 
 @Component({
     selector: 'permissions-lookup',
+    exportAs: 'permissions-lookup',
     templateUrl: './permissions-lookup-widget.component.html',
-    standalone: false
+    imports: [...FORM_IMPORTS],
+    standalone: true
 })
 export class PermissionsLookupWidgetComponent extends ListingControlsComponent<Permission> implements OnInit {
   @Input() ignoreOptions: Array<Permission> = [];
@@ -23,6 +26,6 @@ export class PermissionsLookupWidgetComponent extends ListingControlsComponent<P
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria);
+    this.sb.fetchPermissions(this.criteria.toHttpParams());
   }
 }

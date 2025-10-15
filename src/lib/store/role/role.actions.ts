@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { IError, RequestCriteria } from '@cartesianui/core';
+import { IError, RequestCriteriaOuput } from '@cartesianui/core';
 import { ResponseMeta } from '@cartesianui/common';
 import { Role, RolePermissions } from '../../models';
 
@@ -24,7 +24,7 @@ export const RoleActions = createActionGroup({
     'Create Failure': props<{ errors: IError, message: string }>(),
     'Update Success': props<{ role: Role }>(),
     'Update Failure': props<{ errors: IError, message: string }>(),
-    'Fetch Roles': props<{ criteria: RequestCriteria }>(),
+    'Fetch Roles': props<{ criteria: RequestCriteriaOuput }>(),
     'Sync Permissions': props<{ id: string, form: RolePermissions }>(),
     'Attach Permissions': props<{ id: string, form: RolePermissions }>(),
     'Detach Permissions': props<{ id: string, form: RolePermissions }>()
