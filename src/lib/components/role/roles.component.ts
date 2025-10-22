@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role } from '../../models';
@@ -26,12 +26,7 @@ type ChildComponent = typeof childComponents;
 export class RolesComponent extends ListingControlsComponent<IRole, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   override childComponents: ChildComponent = childComponents;
 
-  constructor(
-    protected sb: AuthorizationSandbox,
-    injector: Injector
-  ) {
-    super(injector);
-  }
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
     this.initCriteria().with('permissions');
@@ -50,14 +45,14 @@ export class RolesComponent extends ListingControlsComponent<IRole, ChildCompone
   }
 
   list(): void {
-    this.sb.fetchRoles(this.criteria.toHttpParams());
+    this.sb.fetchRoles(this.criteria.httpParams());
   }
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
     this.criteria.updateForm('name', $event.text);
-    this.appendSearchCriteriaToUrl();
-    this.list();
+    // this.appendSearchCriteriaToUrl();
+    // this.list();
   }
 
   onDelete() {

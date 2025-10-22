@@ -1,15 +1,23 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, OnDestroy } from '@angular/core';
 import { FormBaseComponent } from '@cartesianui/common';
 import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission, Role, RolePermissions, RoleForm } from '../../../models';
-import { AUTH_WIDGETS, FORM_IMPORTS } from '../../../authorization.imports';
+import { FORM_IMPORTS } from '../../../authorization.imports';
+
+import { PermissionsWidgetComponent, RolesWidgetComponent, RolesLookupWidgetComponent, PermissionsLookupWidgetComponent } from '../../../widgets';
 
 @Component({
     selector: 'auth-edit-role',
     templateUrl: './role.component.html',
     changeDetection: ChangeDetectionStrategy.Default,
-    imports: [...FORM_IMPORTS, ...AUTH_WIDGETS],
+    imports: [
+      ...FORM_IMPORTS,
+      PermissionsWidgetComponent, 
+      //RolesWidgetComponent, 
+      //RolesLookupWidgetComponent, 
+      //PermissionsLookupWidgetComponent
+    ],
     standalone: true
 })
 export class RoleComponent extends FormBaseComponent<Role> implements AfterViewInit, OnDestroy {
@@ -20,11 +28,10 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
 
   permissionCriteria = new RequestCriteria().limit(500);
 
-  constructor(
-    injector: Injector,
-    protected sb: AuthorizationSandbox
-  ) {
-    super(injector);
+  protected sb = inject(AuthorizationSandbox);
+
+  constructor() {
+    super();
     this.formGroup = new RoleForm({ name: '', displayName: '', description: '', guardName: 'api' }).create();
   }
 
@@ -48,7 +55,7 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   }
 
   loadPermissions() {
-    this.sb.fetchPermissions(this.permissionCriteria.toHttpParams());
+    this.sb.fetchPermissions(this.permissionCriteria.httpParams());
   }
 
   onSave() {

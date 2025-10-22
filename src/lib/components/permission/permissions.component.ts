@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
@@ -21,12 +21,7 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
   
   override childComponents: PermissionChildComponent = permissionChildComponents;
 
-  constructor(
-    protected sb: AuthorizationSandbox,
-    injector: Injector
-  ) {
-    super(injector);
-  }
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
     this.initCriteria();
@@ -51,11 +46,11 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
   onSearch($event: { text: string }) {
     this.criteria.page(1);
     this.criteria.updateForm('name', $event.text);
-    this.appendSearchCriteriaToUrl();
-    this.list();
+    // this.appendSearchCriteriaToUrl();
+    // this.list();
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria.toHttpParams());
+    this.sb.fetchPermissions(this.criteria.httpParams());
   }
 }

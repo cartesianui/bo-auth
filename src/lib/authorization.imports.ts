@@ -24,10 +24,6 @@ import { BadgeModule } from '@coreui/angular';
 import { CommonModule as CartesianCommonModule } from '@cartesianui/common';
 import { BoLayoutModule } from '@cartesianui/coreui';
 
-
-import { PermissionsWidgetComponent, RolesWidgetComponent, RolesLookupWidgetComponent, PermissionsLookupWidgetComponent } from './widgets';
-
-
 /**
  * 🧩 Core shared imports
  * Common imports used across listing & form modules
@@ -43,7 +39,7 @@ export const COMMON_IMPORTS = [
  */
 export const LISTING_IMPORTS = [
   ...COMMON_IMPORTS,
-  NgxDatatableModule,
+  NgxDatatableModule
 ];
 
 /**
@@ -60,12 +56,4 @@ export const FORM_IMPORTS = [
   BadgeModule,
   TypeaheadModule,
   BsDatepickerModule,
-];
-
-
-export const AUTH_WIDGETS = [
-  PermissionsWidgetComponent, 
-  RolesWidgetComponent, 
-  RolesLookupWidgetComponent, 
-  PermissionsLookupWidgetComponent
 ];

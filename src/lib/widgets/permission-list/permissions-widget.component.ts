@@ -3,6 +3,8 @@ import { ListingControlsComponent } from '@cartesianui/common';
 import { Permission } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';
 
+console.log('DEBUG Imports', LISTING_IMPORTS);
+
 @Component({
     selector: 'permissions-list',
     exportAs: 'permissions-list',
@@ -11,9 +13,6 @@ import { LISTING_IMPORTS } from '../../authorization.imports';
     standalone: true
 })
 export class PermissionsWidgetComponent extends ListingControlsComponent<Permission> {
-  constructor(injector: Injector) {
-    super(injector);
-  }
 
   list(): void {}
 }

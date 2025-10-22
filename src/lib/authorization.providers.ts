@@ -1,6 +1,6 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders, Provider } from '@angular/core';
+import { provideState, StoreModule } from '@ngrx/store';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 
 import { AuthEffects } from './store/auth.effect';
 import * as fromRole from './store/role/role.reducer';

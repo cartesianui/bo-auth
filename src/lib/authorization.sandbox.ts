@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { Sandbox } from '@cartesianui/common';
 import { RequestCriteriaOuput } from '@cartesianui/core';
 import { select, Store } from '@ngrx/store';
@@ -8,8 +8,10 @@ import { PermissionActions } from './store/permission/permission.actions';
 import * as fromRoles from './store/role/role.reducer';
 import * as fromPermissions from './store/permission/permission.reducer';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AuthorizationSandbox extends Sandbox {
+  private store = inject(Store);
+
   rolesData$ = this.store.pipe(select(fromRoles.entities));
   rolesMetaData$ = this.store.pipe(select(fromRoles.meta));
   selectedRole$ = this.store.pipe(select(fromRoles.selected));
@@ -19,12 +21,9 @@ export class AuthorizationSandbox extends Sandbox {
   permissionsMetaData$ = this.store.pipe(select(fromPermissions.meta));
   selectedPermission$ = this.store.pipe(select(fromPermissions.selected));
 
-  constructor(
-    protected override injector: Injector,
-    protected store: Store
-  ) {
-    super(injector);
-  }
+  // constructor() {
+  //   super();
+  // }
 
   fetchRoles = (criteria: RequestCriteriaOuput) => {
     this.store.dispatch(RoleActions.fetchRoles({ criteria }));

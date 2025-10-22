@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, inject, Injector, Input, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
@@ -14,18 +14,13 @@ import { FORM_IMPORTS } from '../../authorization.imports';
 export class PermissionsLookupWidgetComponent extends ListingControlsComponent<Permission> implements OnInit {
   @Input() ignoreOptions: Array<Permission> = [];
 
-  constructor(
-    injector: Injector,
-    protected sb: AuthorizationSandbox
-  ) {
-    super(injector);
-  }
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
     this.initCriteria().limit(100000);
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria.toHttpParams());
+    this.sb.fetchPermissions(this.criteria.httpParams());
   }
 }

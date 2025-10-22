@@ -1,4 +1,4 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormBaseComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Role, RoleForm } from '../../../models';
@@ -13,12 +13,8 @@ import { FORM_IMPORTS } from '../../../authorization.imports';
     standalone: true
 })
 export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit, OnDestroy {
-  constructor(
-    injector: Injector,
-    private sb: AuthorizationSandbox
-  ) {
-    super(injector);
-  }
+
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
     this.addSubscriptions();
