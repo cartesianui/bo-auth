@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, runInInjectionContext, effect } from '@angular/core';
 import { RequestCriteria, RequestCriteriaFactory } from '@cartesianui/core';
-import { LookupFormControlComponent } from '@cartesianui/common';
+import { SelectableControlComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Role } from '../../models';
 import { FORM_IMPORTS } from '../../authorization.imports';
@@ -16,16 +16,16 @@ import { FORM_IMPORTS } from '../../authorization.imports';
         </div>
         <div class="card-body">
           <div class="form-group">
-            <lookup-form-control [options]="items()" optionField="name" [multi]="true" [(value)]="value" placeholder="Select roles..." required></lookup-form-control>
+            <selectable-control [options]="items()" optionField="name" [multi]="true" [(value)]="value" placeholder="Select roles..." required></selectable-control>
           </div>
         </div>
       </div>
     </div>
   `,
-  imports: [...FORM_IMPORTS, LookupFormControlComponent],
+  imports: [...FORM_IMPORTS, SelectableControlComponent],
   standalone: true
 })
-export class RolesLookupWidgetComponent extends LookupFormControlComponent<Role> implements OnInit {
+export class RolesLookupWidgetComponent extends SelectableControlComponent<Role> implements OnInit {
   protected sb = inject(AuthorizationSandbox);
 
   protected criteriaFactory = inject(RequestCriteriaFactory);
