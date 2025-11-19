@@ -1,4 +1,6 @@
-import { Component, OnInit, inject, runInInjectionContext, effect } from '@angular/core';
+import { Component, OnInit, signal, forwardRef, inject, OnDestroy, input } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { RequestCriteria, RequestCriteriaFactory } from '@cartesianui/core';
 import { SelectableControlComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
@@ -16,21 +18,36 @@ import { FORM_IMPORTS } from '../../authorization.imports';
         </div>
         <div class="card-body">
           <div class="form-group">
-            <selectable-control [options]="items()" optionField="name" [multi]="true" [(value)]="value" placeholder="Select roles..." required></selectable-control>
+            <selectable-control [options]="items()" [ignoreOptions]="ignoreOptions()" optionField="name" [multi]="true" [value]="value()" (valueChange)="onValueChange($event)" placeholder="Select roles..." required></selectable-control>
           </div>
         </div>
       </div>
     </div>
   `,
   imports: [...FORM_IMPORTS, SelectableControlComponent],
-  standalone: true
+  standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RolesLookupWidgetComponent),
+      multi: true
+    }
+  ]
 })
-export class RolesLookupWidgetComponent extends SelectableControlComponent<Role> implements OnInit {
+export class RolesLookupWidgetComponent implements OnInit, OnDestroy, ControlValueAccessor {
   protected sb = inject(AuthorizationSandbox);
 
   protected criteriaFactory = inject(RequestCriteriaFactory);
 
   criteria: RequestCriteria;
+  items = signal<Role[]>([]);
+  ignoreOptions = input<Role[]>([]);
+  value = signal<any>(null);
+
+  protected subs = new Subscription();
+
+  private onChange: (value: any) => void = () => {};
+  private onTouched: () => void = () => {};
 
   ngOnInit(): void {
     this.initCriteria().limit(100000);
@@ -41,23 +58,12 @@ export class RolesLookupWidgetComponent extends SelectableControlComponent<Role>
         this.items.set(roles ?? []);
       })
     );
+  }
 
-    // runInInjectionContext(this.injector, () => {
-    //   effect(() => {
-    //     console.log('🔄 Criteria updated →', this.criteria?.queryString?.());
-    //     // this.list();
-    //     // this.appendSearchCriteriaToUrl();
-    //   });
-    // });
-
-    // 🔄 Emmit value change
-    runInInjectionContext(this.injector, () => {
-      effect(() => {
-        const current = this.value();
-        this.valueChange.emit(current);
-        this.onChange(current);
-      });
-    });
+  onValueChange(newVal: any): void {
+    this.value.set(newVal);
+    this.onChange(newVal);
+    this.onTouched();
   }
 
   initCriteria(): RequestCriteria {
@@ -68,11 +74,33 @@ export class RolesLookupWidgetComponent extends SelectableControlComponent<Role>
     this.sb.fetchRoles(this.criteria.httpParams());
   }
 
-  override equals(a: Role, b: Role) {
-    return a.id === b.id;
+  // ControlValueAccessor implementation
+  writeValue(val: any): void {
+    // Only update if the value actually changed to avoid feedback loops
+    try {
+      const current = this.value();
+      if (JSON.stringify(current) === JSON.stringify(val)) {
+        return;
+      }
+    } catch {
+      // fallthrough if stringification fails
+    }
+    this.value.set(val ?? null);
   }
 
-  override getOptionLabel(role: Role) {
-    return `${role.name} (${role.displayName})`;
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    // could disable the inner control if needed
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 }
