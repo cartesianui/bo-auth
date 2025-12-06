@@ -1,15 +1,18 @@
 import { Component, Injector } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
-import { Permission, PermissionSearch } from '../../models';
+import { Permission } from '../../models';
+import { LISTING_IMPORTS } from '../../authorization.imports';
+
+console.log('DEBUG Imports', LISTING_IMPORTS);
 
 @Component({
-  selector: 'permissions-list',
-  templateUrl: './permissions-widget.component.html'
+    selector: 'permissions-list',
+    exportAs: 'permissions-list',
+    templateUrl: './permissions-widget.component.html',
+    imports: [...LISTING_IMPORTS],
+    standalone: true
 })
-export class PermissionsWidgetComponent extends ListingControlsComponent<Permission, PermissionSearch> {
-  constructor(injector: Injector) {
-    super(injector);
-  }
+export class PermissionsWidgetComponent extends ListingControlsComponent<Permission> {
 
   list(): void {}
 }

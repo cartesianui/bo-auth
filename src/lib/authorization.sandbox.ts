@@ -1,32 +1,31 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { Sandbox } from '@cartesianui/common';
-import { RequestCriteria } from '@cartesianui/core';
+import { RequestCriteriaOuput } from '@cartesianui/core';
 import { select, Store } from '@ngrx/store';
-import { Role, RolePermissions, PermissionSearch, RoleSearch, Permission } from './models';
+import { Role, RolePermissions, Permission } from './models';
 import { RoleActions } from './store/role/role.actions';
 import { PermissionActions } from './store/permission/permission.actions';
 import * as fromRoles from './store/role/role.reducer';
 import * as fromPermissions from './store/permission/permission.reducer';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AuthorizationSandbox extends Sandbox {
+  private store = inject(Store);
+
   rolesData$ = this.store.pipe(select(fromRoles.entities));
   rolesMetaData$ = this.store.pipe(select(fromRoles.meta));
   selectedRole$ = this.store.pipe(select(fromRoles.selected));
-  creationState$ = this.store.pipe(select(fromRoles.creation));
+  createState$ = this.store.pipe(select(fromRoles.create));
 
   permissionsData$ = this.store.pipe(select(fromPermissions.entities));
   permissionsMetaData$ = this.store.pipe(select(fromPermissions.meta));
   selectedPermission$ = this.store.pipe(select(fromPermissions.selected));
 
-  constructor(
-    protected override injector: Injector,
-    protected store: Store
-  ) {
-    super(injector);
-  }
+  // constructor() {
+  //   super();
+  // }
 
-  fetchRoles = (criteria: RequestCriteria<RoleSearch>) => {
+  fetchRoles = (criteria: RequestCriteriaOuput) => {
     this.store.dispatch(RoleActions.fetchRoles({ criteria }));
   };
 
@@ -46,7 +45,7 @@ export class AuthorizationSandbox extends Sandbox {
     this.store.dispatch(RoleActions.deleteRole({ id }));
   };
 
-  fetchPermissions = (criteria: RequestCriteria<PermissionSearch>): void => {
+  fetchPermissions = (criteria: RequestCriteriaOuput): void => {
     this.store.dispatch(PermissionActions.fetchPermissions({ criteria }));
   };
 
@@ -61,15 +60,15 @@ export class AuthorizationSandbox extends Sandbox {
    *
    * @param form: RolePermissions
    */
-  syncPermissions = (form: RolePermissions) => {
-    this.store.dispatch(RoleActions.syncPermissions({ form }));
+  syncPermissions = (id: string, form: RolePermissions) => {
+    this.store.dispatch(RoleActions.syncPermissions({ id, form }));
   }
 
-  attachPermissions = (form: RolePermissions): void => {
-    this.store.dispatch(RoleActions.attachPermissions({ form }));
+  attachPermissions = (id: string, form: RolePermissions): void => {
+    this.store.dispatch(RoleActions.attachPermissions({ id, form }));
   };
 
-  detachPermissions = (form: RolePermissions): void => {
-    this.store.dispatch(RoleActions.detachPermissions({ form }));
+  detachPermissions = (id: string, form: RolePermissions): void => {
+    this.store.dispatch(RoleActions.detachPermissions({ id, form }));
   };
 }

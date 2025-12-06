@@ -1,19 +1,20 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormBaseComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Role, RoleForm } from '../../../models';
+import { FORM_IMPORTS } from '../../../authorization.imports';
 
 @Component({
-  selector: 'auth-create-role',
-  templateUrl: './create-role.component.html'
+    selector: 'auth-create-role',
+    templateUrl: './create-role.component.html',
+    imports: [
+      ...FORM_IMPORTS
+    ],
+    standalone: true
 })
 export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit, OnDestroy {
-  constructor(
-    injector: Injector,
-    private sb: AuthorizationSandbox
-  ) {
-    super(injector);
-  }
+
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
     this.addSubscriptions();
@@ -22,8 +23,8 @@ export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit
 
   addSubscriptions() {
     this.subscriptions.push(
-      this.sb.creationState$.subscribe(({ compeleted }) => {
-        if (compeleted) {
+      this.sb.createState$.subscribe(({ completed }) => {
+        if (completed) {
           this.created.emit(true);
         }
       })

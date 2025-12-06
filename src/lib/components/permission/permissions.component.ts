@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { Permission, PermissionSearch } from '../../models';
+import { Permission } from '../../models';
+import { LISTING_IMPORTS } from '../../authorization.imports';
+import { PermissionComponent } from './detail/permission.component';
 
 const permissionChildComponents = {
   permissionDetails: 'permissionDetails'
@@ -10,22 +12,19 @@ const permissionChildComponents = {
 type PermissionChildComponent = typeof permissionChildComponents;
 
 @Component({
-  selector: 'auth-permissions',
-  templateUrl: './permissions.component.html'
+    selector: 'auth-permissions',
+    templateUrl: './permissions.component.html',
+    imports: [...LISTING_IMPORTS, PermissionComponent],
+    standalone: true
 })
-export class PermissionsComponent extends ListingControlsComponent<Permission, PermissionSearch, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+export class PermissionsComponent extends ListingControlsComponent<Permission, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   
   override childComponents: PermissionChildComponent = permissionChildComponents;
 
-  constructor(
-    protected sb: AuthorizationSandbox,
-    injector: Injector
-  ) {
-    super(injector);
-  }
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
-    this.initCriteria(PermissionSearch);
+    this.initCriteria();
     this.addSubscriptions();
   }
 
@@ -41,17 +40,17 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
 
   view(permission: Permission) {
     this.sb.selectPermission(permission);
-    this.showChildComponent(this.childComponents.permissionDetails);
+    this.showChildComponent(this.childComponents.permissionDetails, 'permissionDetails');
   }
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
-    this.criteria.setSearchField('name', $event.text);
-    this.appendSearchCriteriaToUrl();
-    this.list();
+    this.criteria.updateForm('name', $event.text);
+    // this.appendSearchCriteriaToUrl();
+    // this.list();
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria);
+    this.sb.fetchPermissions(this.criteria.httpParams());
   }
 }

@@ -17,8 +17,10 @@ export const initialState: PermissionState = adapter.getInitialState({
   selected: null,
   meta: null,
   request: requestDefault,
-  creation: requestDefault,
-  updation: requestDefault
+  create: requestDefault,
+  update: requestDefault,
+  get: requestDefault,
+  delete: requestDefault
 });
 
 export const reducer = createReducer(
@@ -46,8 +48,8 @@ export const permissionsFeature = createFeature({
     meta: createSelector(selectPermissionsState, (state: PermissionState) => state.meta),
     selected: createSelector(selectPermissionsState, (state: PermissionState) => state.selected),
     request: createSelector(selectPermissionsState, (state: PermissionState) => state.request),
-    creation: createSelector(selectPermissionsState, (state: PermissionState) => state.creation),
-    updation: createSelector(selectPermissionsState, (state: PermissionState) => state.updation),
+    create: createSelector(selectPermissionsState, (state: PermissionState) => state.create),
+    update: createSelector(selectPermissionsState, (state: PermissionState) => state.update),
     entities: createSelector(selectPermissionsState, (state: PermissionState) => Object.values(state.entities))
   })
 });

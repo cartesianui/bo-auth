@@ -1,15 +1,18 @@
-import { Component, Injector } from '@angular/core';
+import { Component, importProvidersFrom, Injector, Provider } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
-import { Role, RoleSearch } from '../../models';
+import { Role } from '../../models';
+import { LISTING_IMPORTS } from '../../authorization.imports';
 
 @Component({
-  selector: 'roles-list',
-  templateUrl: './roles-widget.component.html'
+    selector: 'roles-list',
+    exportAs: 'roles-list',
+    templateUrl: './roles-widget.component.html',
+    imports: [
+      ...LISTING_IMPORTS
+    ],
+    standalone: true
 })
-export class RolesWidgetComponent extends ListingControlsComponent<Role, RoleSearch> {
-  constructor(injector: Injector) {
-    super(injector);
-  }
+export class RolesWidgetComponent extends ListingControlsComponent<Role> {
 
   list(): void {}
 }

@@ -1,7 +1,10 @@
-import { AfterViewInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { IRole, Role, RoleSearch } from '../../models';
+import { IRole, Role } from '../../models';
+import { LISTING_IMPORTS } from '../../authorization.imports';
+import { RoleComponent } from './edit/role.component';
+import { RoleFormComponent } from './create/create-role.component';
 
 const childComponents = {
   createRole: { id: 'createRole', title: 'Create Role' },
@@ -11,21 +14,22 @@ const childComponents = {
 type ChildComponent = typeof childComponents;
 
 @Component({
-  selector: 'auth-roles',
-  templateUrl: './roles.component.html'
+    selector: 'auth-roles',
+    templateUrl: './roles.component.html',
+    imports: [
+      ...LISTING_IMPORTS,
+      RoleComponent,
+      RoleFormComponent
+    ],
+    standalone: true
 })
-export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
+export class RolesComponent extends ListingControlsComponent<IRole, ChildComponent> implements OnInit, AfterViewInit, OnDestroy {
   override childComponents: ChildComponent = childComponents;
 
-  constructor(
-    protected sb: AuthorizationSandbox,
-    injector: Injector
-  ) {
-    super(injector);
-  }
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
-    this.initCriteria(RoleSearch);
+    this.initCriteria().with('permissions');
     this.hydrateSearchCriteria();
     this.addSubscriptions();
   }
@@ -41,14 +45,14 @@ export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, 
   }
 
   list(): void {
-    this.sb.fetchRoles(this.criteria);
+    this.sb.fetchRoles(this.criteria.httpParams());
   }
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
-    this.criteria.setSearchField('name', $event.text);
-    this.appendSearchCriteriaToUrl();
-    this.list();
+    this.criteria.updateForm('name', $event.text);
+    // this.appendSearchCriteriaToUrl();
+    // this.list();
   }
 
   onDelete() {
@@ -60,13 +64,13 @@ export class RolesComponent extends ListingControlsComponent<IRole, RoleSearch, 
     });
   }
 
-  onCreated() {
+  override onCreated() {
     this.list();
-    this.showChildComponent(this.childComponents.editRole);
+    this.showChildComponent(this.childComponents.editRole, 'editRole');
   }
 
   edit(role: Role) {
     this.sb.selectRole(role);
-    this.showChildComponent(this.childComponents.editRole);
+    this.showChildComponent(this.childComponents.editRole, 'editRole');
   }
 }

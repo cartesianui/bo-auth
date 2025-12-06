@@ -1,27 +1,26 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, inject, Injector, Input, OnInit } from '@angular/core';
 import { ListingControlsComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
-import { Permission, PermissionSearch } from '../../models';
+import { Permission } from '../../models';
+import { FORM_IMPORTS } from '../../authorization.imports';
 
 @Component({
-  selector: 'permissions-lookup',
-  templateUrl: './permissions-lookup-widget.component.html'
+    selector: 'permissions-lookup',
+    exportAs: 'permissions-lookup',
+    templateUrl: './permissions-lookup-widget.component.html',
+    imports: [...FORM_IMPORTS],
+    standalone: true
 })
-export class PermissionsLookupWidgetComponent extends ListingControlsComponent<Permission, PermissionSearch> implements OnInit {
+export class PermissionsLookupWidgetComponent extends ListingControlsComponent<Permission> implements OnInit {
   @Input() ignoreOptions: Array<Permission> = [];
 
-  constructor(
-    injector: Injector,
-    protected sb: AuthorizationSandbox
-  ) {
-    super(injector);
-  }
+  protected sb = inject(AuthorizationSandbox);
 
   ngOnInit(): void {
-    this.initCriteria(PermissionSearch).limit(100000);
+    this.initCriteria().limit(100000);
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria);
+    this.sb.fetchPermissions(this.criteria.httpParams());
   }
 }

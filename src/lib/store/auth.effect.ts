@@ -69,10 +69,10 @@ export class AuthEffects {
   syncPermissions$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoleActions.syncPermissions),
-      map(({ form }) => form),
-      switchMap((form) =>
-        this.httpService.syncPermissions(form).pipe(
-          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
+      map(({ id, form }) => ({ id, form })),
+      switchMap(({ id, form }) =>
+        this.httpService.syncPermissions(id, form).pipe(
+          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateSuccess({ role: data }))),
           catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )
@@ -82,10 +82,10 @@ export class AuthEffects {
   attachPermission$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoleActions.attachPermissions),
-      map(({ form }) => form),
-      switchMap((form) =>
-        this.httpService.attachPermission(form).pipe(
-          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
+       map(({ id, form }) => ({ id, form })),
+      switchMap(({ id, form }) =>
+        this.httpService.attachPermission(id, form).pipe(
+          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateSuccess({ role: data }))),
           catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )
@@ -95,10 +95,10 @@ export class AuthEffects {
   detachPermission$ = createEffect(() =>
     this.actions$.pipe(
       ofType(RoleActions.detachPermissions),
-      map(({ form }) => form),
-      switchMap((form) =>
-        this.httpService.detachPermission(form).pipe(
-          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateRole({ role: data }), RoleActions.updateSuccess({ role: data }))),
+      map(({ id, form }) => ({ id, form })),
+      switchMap(({ id, form }) =>
+        this.httpService.detachPermission(id, form).pipe(
+          switchMap(({ data }: ICartesianResponse) => of(RoleActions.updateSuccess({ role: data }))),
           catchError(({ errors, message }: ICartesianResponse) => of(RoleActions.updateFailure({ errors, message })))
         )
       )

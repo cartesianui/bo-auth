@@ -1,13 +1,24 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, Injector, OnDestroy } from '@angular/core';
 import { FormBaseComponent } from '@cartesianui/common';
 import { RequestCriteria } from '@cartesianui/core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
-import { Permission, Role, RolePermissions, PermissionSearch, RoleForm } from '../../../models';
+import { Permission, Role, RolePermissions, RoleForm } from '../../../models';
+import { FORM_IMPORTS } from '../../../authorization.imports';
+
+import { PermissionsWidgetComponent, RolesWidgetComponent, RolesLookupWidgetComponent, PermissionsLookupWidgetComponent } from '../../../widgets';
 
 @Component({
-  selector: 'auth-edit-role',
-  templateUrl: './role.component.html',
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'auth-edit-role',
+    templateUrl: './role.component.html',
+    changeDetection: ChangeDetectionStrategy.Default,
+    imports: [
+      ...FORM_IMPORTS,
+      PermissionsWidgetComponent, 
+      //RolesWidgetComponent, 
+      //RolesLookupWidgetComponent, 
+      //PermissionsLookupWidgetComponent
+    ],
+    standalone: true
 })
 export class RoleComponent extends FormBaseComponent<Role> implements AfterViewInit, OnDestroy {
   role: Role;
@@ -15,13 +26,12 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   permissionsToRevoke: Permission[] = [];
   permissionLookupOptions: Permission[] = [];
 
-  permissionCriteria = new RequestCriteria<PermissionSearch>(new PermissionSearch()).limit(500);
+  permissionCriteria = new RequestCriteria().limit(500);
 
-  constructor(
-    injector: Injector,
-    protected sb: AuthorizationSandbox
-  ) {
-    super(injector);
+  protected sb = inject(AuthorizationSandbox);
+
+  constructor() {
+    super();
     this.formGroup = new RoleForm({ name: '', displayName: '', description: '', guardName: 'api' }).create();
   }
 
@@ -45,7 +55,7 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   }
 
   loadPermissions() {
-    this.sb.fetchPermissions(this.permissionCriteria);
+    this.sb.fetchPermissions(this.permissionCriteria.httpParams());
   }
 
   onSave() {
@@ -55,22 +65,22 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   }
 
   onRevoke() {
-    const permissionsIds = this.permissionsToRevoke.map((permission) => permission.id);
+    const permissionIds = this.permissionsToRevoke.map((permission) => permission.id);
     const form = new RolePermissions({
       roleId: this.role.id,
-      permissionsIds
+      permissionIds
     });
-    this.sb.detachPermissions(form);
+    this.sb.detachPermissions(this.role.id, form);
     this.permissionsToRevoke = [];
   }
 
   onAttach() {
-    const permissionsIds = this.permissionsToAttach.map((permission) => permission.id);
+    const permissionIds = this.permissionsToAttach.map((permission) => permission.id);
     const form = new RolePermissions({
       roleId: this.role.id,
-      permissionsIds
+      permissionIds
     });
-    this.sb.attachPermissions(form);
+    this.sb.attachPermissions(this.role.id, form);
     this.permissionsToAttach = [];
   }
 }

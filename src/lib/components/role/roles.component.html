@@ -2,7 +2,7 @@
 <page-actions
   (searchChange)="onSearch($event)"
   (delete)="onDelete()"
-  (create)="showChildComponent(childComponents.createRole)"
+  (create)="showChildComponent(childComponents.createRole, 'createRole')"
   [disabled]="{
     delete: selected.length !== 1
   }"
@@ -13,7 +13,7 @@
   <auth-edit-role *ngIf="isComponentSelected(childComponents.editRole)" />
 </app-offcanvas>
 
-<div class="animated fadeIn dt" #dtContainer>
+<div class="main-content dt" #dtContainer>
   <div class="row">
     <div class="col-md-12 my-2">
       <span class="float-end">Total: {{ pagination.total }}</span>
