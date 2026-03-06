@@ -1,4 +1,4 @@
-import { BaseModel } from '@cartesianui/common';
+import { BaseModel, EntityMeta } from '@cartesianui/common';
 
 export interface IRole {
   type?: string | undefined;
@@ -11,6 +11,13 @@ export interface IRole {
   permissions?: any | undefined;
 }
 
+@EntityMeta({
+  search: {
+    id: { column: 'id', operator: '=', value: null, options: { url: false} },
+    name: { column: 'name', operator: 'like', value: null },
+    guardName: { column: 'guard_name', operator: '=', value: 'api', options: { url: false}}
+  }
+})
 export class Role extends BaseModel implements IRole {
   type: string;
   id: string;
@@ -25,11 +32,4 @@ export class Role extends BaseModel implements IRole {
     super(data);
   }
 
-  static override get searchForm() {
-    return {
-      id: { column: 'id', operator: '=', value: null, options: { url: false} },
-      name: { column: 'name', operator: 'like', value: null },
-      guardName: { column: 'guard_name', operator: '=', value: 'api', options: { url: false}}
-    };
-  }
 }

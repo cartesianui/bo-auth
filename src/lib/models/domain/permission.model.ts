@@ -1,4 +1,4 @@
-import { BaseModel } from '@cartesianui/common';
+import { BaseModel, EntityMeta } from '@cartesianui/common';
 
 export interface IPermission {
   id: string | undefined;
@@ -7,6 +7,13 @@ export interface IPermission {
   displayName: string | undefined;
 }
 
+@EntityMeta({
+  search: {
+    id: { column: 'id', operator: '=', value: null, options: { url: false} },
+    name: { column: 'name', operator: '=', value: null },
+    guardName: { column: 'guard_name', operator: '=', value: "api", options: { url: false} }
+  }
+})
 export class Permission extends BaseModel implements IPermission {
   public id: string;
   public name: string;
@@ -17,11 +24,4 @@ export class Permission extends BaseModel implements IPermission {
     super(data);
   }
 
-  static override get searchForm() {
-    return {
-      id: { column: 'id', operator: '=', value: null, options: { url: false} },
-      name: { column: 'name', operator: '=', value: null },
-      guardName: { column: 'guard_name', operator: '=', value: "api", options: { url: false} }
-    };
-  }
 }
