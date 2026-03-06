@@ -16,11 +16,11 @@ export class AuthEffects {
     private httpService: AuthHttpService
   ) {}
 
-  fetchRoles$ = createEffect(() =>
+  getRoles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(RoleActions.fetchRoles),
+      ofType(RoleActions.getRoles),
       map(({ criteria }) => criteria),
-      switchMap((criteria) => this.httpService.fetchRoles(criteria).pipe(map(({ data, meta }: ICartesianResponse) => RoleActions.loadRoles({ roles: data, meta: meta }))))
+      switchMap((criteria) => this.httpService.getRoles(criteria).pipe(map(({ data, meta }: ICartesianResponse) => RoleActions.loadRoles({ roles: data, meta: meta }))))
     )
   );
 
@@ -58,11 +58,11 @@ export class AuthEffects {
     )
   );
 
-  fetchPermissions$ = createEffect(() =>
+  getPermissions$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(PermissionActions.fetchPermissions),
+      ofType(PermissionActions.getPermissions),
       map((action) => action.criteria),
-      switchMap((criteria) => this.httpService.fetchPermissions(criteria).pipe(map(({ data, meta }: ICartesianResponse) => PermissionActions.loadPermissions({ permissions: data, meta: meta }))))
+      switchMap((criteria) => this.httpService.getPermissions(criteria).pipe(map(({ data, meta }: ICartesianResponse) => PermissionActions.loadPermissions({ permissions: data, meta: meta }))))
     )
   );
 

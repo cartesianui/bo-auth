@@ -10,7 +10,7 @@ export const PermissionActions = createActionGroup({
   events: {
     'Select Permission': props<{ permission: Permission }>(),
     'Create Permission': props<{ permission: Permission }>(),
-    'Fetch Permissions': props<{ criteria: RequestCriteriaOuput }>(),
+    'Get Permissions': props<{ criteria: RequestCriteriaOuput }>(),
     'Load Permissions': props<{ permissions: Permission[], meta: ResponseMeta }>(),
     'Add Permission': props<{ permission: Permission }>(),
     'Upsert Permission': props<{ permission: Permission }>(),

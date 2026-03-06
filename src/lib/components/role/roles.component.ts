@@ -45,7 +45,7 @@ export class RolesComponent extends ListingControlsComponent<IRole, ChildCompone
   }
 
   list(): void {
-    this.sb.fetchRoles(this.criteria.httpParams());
+    this.sb.getRoles(this.criteria.httpParams());
   }
 
   onSearch($event: { text: string }) {

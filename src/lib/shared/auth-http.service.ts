@@ -13,7 +13,7 @@ export class AuthHttpService extends HttpService {
 
   // Authorization: User Routes
   @GET('/users/{id}/roles')
-  public fetchUserRoles(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
+  public getUserRoles(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -33,7 +33,7 @@ export class AuthHttpService extends HttpService {
   }
 
   @GET('/users/{id}/permissions')
-  public fetchUserPermissions(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
+  public getUserPermissions(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -49,12 +49,12 @@ export class AuthHttpService extends HttpService {
 
   // Authorization: Role Routes
   @GET('/roles')
-  public fetchRoles(@Criteria criteria: RequestCriteriaOuput): Observable<any> {
+  public getRoles(@Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
   @GET('/roles/{id}')
-  public fetchRole(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
+  public getRole(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -74,7 +74,7 @@ export class AuthHttpService extends HttpService {
   }
 
   @GET('/roles/{id}/permissions')
-  public fetchRolePermissions(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
+  public getRolePermissions(@Path('id') id: string, @Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
@@ -95,12 +95,12 @@ export class AuthHttpService extends HttpService {
   
 
   @GET('/permissions')
-  public fetchPermissions(@Criteria criteria: RequestCriteriaOuput): Observable<any> {
+  public getPermissions(@Criteria criteria: RequestCriteriaOuput): Observable<any> {
     return null;
   }
 
   @GET('/permissions/{id}')
-  public fetchPermission(@Path('id') id: string): Observable<any> {
+  public getPermission(@Path('id') id: string): Observable<any> {
     return null;
   }
 }

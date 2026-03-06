@@ -51,6 +51,6 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
   }
 
   list(): void {
-    this.sb.fetchPermissions(this.criteria.httpParams());
+    this.sb.getPermissions(this.criteria.httpParams());
   }
 }

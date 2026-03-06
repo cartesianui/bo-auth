@@ -55,7 +55,7 @@ export class RoleComponent extends FormBaseComponent<Role> implements AfterViewI
   }
 
   loadPermissions() {
-    this.sb.fetchPermissions(this.permissionCriteria.httpParams());
+    this.sb.getPermissions(this.permissionCriteria.httpParams());
   }
 
   onSave() {

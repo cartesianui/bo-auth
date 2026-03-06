@@ -71,7 +71,7 @@ export class RolesLookupWidgetComponent implements OnInit, OnDestroy, ControlVal
   }
 
   list(): void {
-    this.sb.fetchRoles(this.criteria.httpParams());
+    this.sb.getRoles(this.criteria.httpParams());
   }
 
   // ControlValueAccessor implementation

@@ -25,8 +25,8 @@ export class AuthorizationSandbox extends Sandbox {
   //   super();
   // }
 
-  fetchRoles = (criteria: RequestCriteriaOuput) => {
-    this.store.dispatch(RoleActions.fetchRoles({ criteria }));
+  getRoles = (criteria: RequestCriteriaOuput) => {
+    this.store.dispatch(RoleActions.getRoles({ criteria }));
   };
 
   selectRole = (role: Role) => {
@@ -45,8 +45,8 @@ export class AuthorizationSandbox extends Sandbox {
     this.store.dispatch(RoleActions.deleteRole({ id }));
   };
 
-  fetchPermissions = (criteria: RequestCriteriaOuput): void => {
-    this.store.dispatch(PermissionActions.fetchPermissions({ criteria }));
+  getPermissions = (criteria: RequestCriteriaOuput): void => {
+    this.store.dispatch(PermissionActions.getPermissions({ criteria }));
   };
 
   selectPermission = (permission: Permission) => {
