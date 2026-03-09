@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <div class="form-group">
-        <lookup-widget [options]="sb.permissionsData$ | async" [ignoreOptions]="ignoreOptions" [(selected)]="selected">
+        <lookup-widget [options]="sb.permission.entities()" [ignoreOptions]="ignoreOptions" [(selected)]="selected">
           <small>Select permissions to attach</small>
         </lookup-widget>
       </div>

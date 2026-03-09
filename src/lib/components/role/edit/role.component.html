@@ -42,7 +42,7 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <lookup-widget [options]="permissionLookupOptions" [ignoreOptions]="role?.permissions?.data" [(selected)]="permissionsToAttach">
+              <lookup-widget [options]="permissionLookupOptions()" [ignoreOptions]="role()?.permissions?.data" [(selected)]="permissionsToAttach">
                 <small>Select permissions to attach</small>
               </lookup-widget>
             </div>
@@ -55,7 +55,7 @@
             <strong>Role Permissions</strong>
           </div>
           <div class="card-body">
-            <permissions-list [rows]="role?.permissions?.data" [(selected)]="permissionsToRevoke"></permissions-list>
+            <permissions-list [rows]="role()?.permissions?.data" [(selected)]="permissionsToRevoke"></permissions-list>
           </div>
         </div>
       </div>

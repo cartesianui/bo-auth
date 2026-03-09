@@ -8,6 +8,11 @@ export interface IPermission {
 }
 
 @EntityMeta({
+  list: [
+    { key: 'name', label: 'Name', opt: { link: true } },
+    { key: 'displayName', label: 'Display Name', opt: {} },
+    { key: 'description', label: 'Description', opt: {} },
+  ],
   search: {
     id: { column: 'id', operator: '=', value: null, options: { url: false} },
     name: { column: 'name', operator: '=', value: null },
