@@ -1,8 +1,9 @@
 <default-actions
+  (save)="onSave()"
   (attach)="onAttach()"
   (revoke)="onRevoke()"
   [disabled]="{
-    save: formGroup.invalid,
+    save: formGroup.invalid || !formGroup.dirty,
     attach: permissionsToAttach?.length < 1,
     revoke: permissionsToRevoke?.length < 1
   }"
@@ -10,33 +11,35 @@
 <div class="main-content">
   <form novalidate autocomplete="off" [formGroup]="formGroup">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-4">
         <div class="card">
           <div class="card-header">
-            <strong>General</strong>
+            <strong>Role Details</strong>
           </div>
           <div class="card-body">
             <div class="form-group required">
               <with-validation>
                 <label class="form-label">Name</label>
-                <input validate type="text" formControlName="name" class="form-control" placeholder="Name" readonly noWhiteSpace required />
+                <input validate type="text" formControlName="name" class="form-control" placeholder="Name" noWhiteSpace required />
               </with-validation>
             </div>
             <div class="form-group required mt-2">
               <with-validation>
                 <label class="form-label">Display Name</label>
-                <input validate type="text" formControlName="displayName" class="form-control" placeholder="Display Name" readonly required />
+                <input validate type="text" formControlName="displayName" class="form-control" placeholder="Display Name" required />
               </with-validation>
             </div>
             <div class="form-group required mt-2">
               <with-validation>
                 <label class="form-label">Description</label>
-                <textarea validate type="text" formControlName="description" class="form-control" readonly required></textarea>
+                <textarea validate type="text" formControlName="description" class="form-control" rows="3" required></textarea>
               </with-validation>
             </div>
           </div>
         </div>
-        <div class="card mt-2">
+      </div>
+      <div class="col-md-8">
+        <div class="card">
           <div class="card-header">
             <strong>Attach Permissions</strong>
           </div>
@@ -48,11 +51,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-12">
         <div class="card mt-2">
           <div class="card-header">
-            <strong>Role Permissions</strong>
+            <strong>Current Permissions</strong>
+            <small class="float-end text-muted">{{ role()?.permissions?.data?.length ?? 0 }} assigned</small>
           </div>
           <div class="card-body">
             <permissions-list [rows]="role()?.permissions?.data" [(selected)]="permissionsToRevoke"></permissions-list>
