@@ -54,7 +54,7 @@ export class RolesLookupWidgetComponent implements OnInit, OnDestroy, ControlVal
     this.list();
 
     this.subs.add(
-      this.sb.rolesData$.subscribe((roles) => {
+      this.sb.role.entities$.subscribe((roles) => {
         this.items.set(roles ?? []);
       })
     );
@@ -71,7 +71,7 @@ export class RolesLookupWidgetComponent implements OnInit, OnDestroy, ControlVal
   }
 
   list(): void {
-    this.sb.getRoles(this.criteria.httpParams());
+    this.sb.role.getAll(this.criteria.httpParams());
   }
 
   // ControlValueAccessor implementation

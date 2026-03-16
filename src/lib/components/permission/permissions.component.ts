@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
-import { ListingControlsComponent } from '@cartesianui/common';
+import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy, effect, inject } from '@angular/core';
+import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';
 import { PermissionComponent } from './detail/permission.component';
 
 const permissionChildComponents = {
-  permissionDetails: 'permissionDetails'
+  permissionDetails: { id: 'permissionDetails', title: 'Permission Details' }
 } as const;
 
 type PermissionChildComponent = typeof permissionChildComponents;
@@ -14,43 +14,51 @@ type PermissionChildComponent = typeof permissionChildComponents;
 @Component({
     selector: 'auth-permissions',
     templateUrl: './permissions.component.html',
-    imports: [...LISTING_IMPORTS, PermissionComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      ...LISTING_IMPORTS,
+      AppDatatableComponent,
+      PermissionComponent
+    ],
+    providers: [
+      {
+        provide: ENTITY_CONSTRUCTOR,
+        useValue: Permission
+      }
+    ],
     standalone: true
 })
 export class PermissionsComponent extends ListingControlsComponent<Permission, PermissionChildComponent> implements OnInit, AfterViewInit, OnDestroy {
-  
+
   override childComponents: PermissionChildComponent = permissionChildComponents;
 
   protected sb = inject(AuthorizationSandbox);
 
+  private readonly busyEffect = effect(() => {
+    this.handleBusyState(this.sb.permission.getState());
+  });
+
+  private readonly completeEffect = effect(() => {
+    if (!this.sb.permission.getCompleted()) return;
+    this.sb.permission.clearRequestState(RequestType.Get);
+  });
+
   ngOnInit(): void {
+    this.loadEntityMetadata();
     this.initCriteria();
-    this.addSubscriptions();
   }
 
-  addSubscriptions = () => {
-    this.subscriptions.push(
-      this.sb.permissionsMetaData$.subscribe((meta: any) => {
-        if (meta) {
-          this.pagination = meta ? meta.pagination : null;
-        }
-      })
-    );
-  };
-
   view(permission: Permission) {
-    this.sb.selectPermission(permission);
+    this.sb.permission.select(permission);
     this.showChildComponent(this.childComponents.permissionDetails, 'permissionDetails');
   }
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
     this.criteria.updateForm('name', $event.text);
-    // this.appendSearchCriteriaToUrl();
-    // this.list();
   }
 
   list(): void {
-    this.sb.getPermissions(this.criteria.httpParams());
+    this.sb.permission.getAll(this.criteria.httpParams());
   }
 }

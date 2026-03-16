@@ -1,39 +1,47 @@
-import { Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
-import { FormBaseComponent } from '@cartesianui/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, effect, inject } from '@angular/core';
+import { ENTITY_CONSTRUCTOR, FormBaseComponent, RequestType } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
-import { Role, RoleForm } from '../../../models';
+import { Role } from '../../../models';
 import { FORM_IMPORTS } from '../../../authorization.imports';
 
 @Component({
     selector: 'auth-create-role',
     templateUrl: './create-role.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       ...FORM_IMPORTS
     ],
+    providers: [
+      {
+        provide: ENTITY_CONSTRUCTOR,
+        useValue: Role
+      }
+    ],
     standalone: true
 })
-export class RoleFormComponent extends FormBaseComponent<Role> implements OnInit, OnDestroy {
+export class RoleFormComponent extends FormBaseComponent<Role> implements OnDestroy {
 
   protected sb = inject(AuthorizationSandbox);
 
-  ngOnInit(): void {
-    this.addSubscriptions();
-    this.formGroup = new RoleForm({ name: '', displayName: '', description: '', guardName: 'api' }).create();
-  }
+  private readonly busyEffect = effect(() => {
+    this.handleFormBusyState(this.sb.role.createState());
+  });
 
-  addSubscriptions() {
-    this.subscriptions.push(
-      this.sb.createState$.subscribe(({ completed }) => {
-        if (completed) {
-          this.created.emit(true);
-        }
-      })
-    );
+  private readonly completeEffect = effect(() => {
+    if (!this.sb.role.createCompleted()) return;
+    this.created.emit(true);
+    this.notify.success('Successfully Created', 'Success');
+    this.sb.role.clearRequestState(RequestType.Create);
+  });
+
+  constructor() {
+    super(Role);
+    this.initForm();
   }
 
   save() {
-    if (this.formGroup.valid) {
-      this.sb.createRole(new Role(this.formGroup.value));
-    }
+    if (!this.formGroup.valid) return;
+    const entity = this.getEntityFromForm();
+    this.sb.role.create(entity);
   }
 }

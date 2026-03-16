@@ -21,6 +21,6 @@ export class PermissionsLookupWidgetComponent extends ListingControlsComponent<P
   }
 
   list(): void {
-    this.sb.getPermissions(this.criteria.httpParams());
+    this.sb.permission.getAll(this.criteria.httpParams());
   }
 }

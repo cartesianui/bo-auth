@@ -16,42 +16,23 @@
 <div class="main-content dt" #dtContainer>
   <div class="row">
     <div class="col-md-12 my-2">
-      <span class="float-end">Total: {{ pagination.total }}</span>
+      <span class="float-end">Total: {{ sb.role.pagination()?.total }}</span>
     </div>
   </div>
   <div class="card">
     <div class="card-body">
-      <ngx-datatable
-        class="material"
-        [rows]="sb.rolesData$ | async"
-        [columns]="[{ select: 'select' }, { displayName: 'displayName' }, { description: 'description' }]"
-        [columnMode]="'force'"
-        [headerHeight]="50"
-        [footerHeight]="50"
-        [rowHeight]="'auto'"
-        [externalPaging]="true"
-        [count]="pagination.total"
+      <app-datatable
+        [rows]="sb.role.entities()"
+        [columns]="columns"
+        [headers]="headers"
+        [count]="sb.role.pagination()?.total"
         [offset]="getOffsetFromPagination()"
-        [limit]="pagination.perPage"
+        [limit]="sb.role.pagination()?.perPage"
         [selected]="selected"
-        [selectionType]="'checkbox'"
-        (select)="onSelect($event)"
-        (page)="setPage($event)"
-      >
-        <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true"></ngx-datatable-column>
-
-        <ngx-datatable-column name="display Name" [flexGrow]="3" [minWidth]="200">
-          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-            <a href="javascript:;" (click)="edit(row)">{{ value }} ({{ row.name }})</a>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column name="Description" [flexGrow]="3" [minWidth]="200">
-          <ng-template let-value="value" ngx-datatable-cell-template>
-            {{ value }}
-          </ng-template>
-        </ngx-datatable-column>
-      </ngx-datatable>
+        (selectChange)="onSelect($event)"
+        (pageChange)="setPage($event)"
+        (editClick)="edit($event)"
+      ></app-datatable>
     </div>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { BaseModel, EntityMeta } from '@cartesianui/common';
+import { Validators } from '@angular/forms';
 
 export interface IRole {
   type?: string | undefined;
@@ -12,6 +13,16 @@ export interface IRole {
 }
 
 @EntityMeta({
+  list: [
+    { key: 'name', label: 'Name', opt: { link: true } },
+    { key: 'displayName', label: 'Display Name', opt: {} },
+    { key: 'description', label: 'Description', opt: {} },
+  ],
+  form: [
+    { key: 'name', label: 'Name', opt: { validators: [Validators.required, Validators.maxLength(255)] } },
+    { key: 'displayName', label: 'Display Name', opt: {} },
+    { key: 'description', label: 'Description', opt: {} },
+  ],
   search: {
     id: { column: 'id', operator: '=', value: null, options: { url: false} },
     name: { column: 'name', operator: 'like', value: null },

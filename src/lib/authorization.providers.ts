@@ -1,32 +1,28 @@
-import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders, Provider } from '@angular/core';
-import { provideState, StoreModule } from '@ngrx/store';
-import { EffectsModule, provideEffects } from '@ngrx/effects';
-
-import { AuthEffects } from './store/auth.effect';
-import * as fromRole from './store/role/role.reducer';
-import * as fromPermissions from './store/permission/permission.reducer';
-
-import { AuthHttpService } from './shared/auth-http.service';
+import { EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { AuthorizationSandbox } from './authorization.sandbox';
+import { fromRole, RoleEffects } from './store/role';
+import { fromPermission, PermissionEffects } from './store/permission';
+import { RoleHttpService } from './shared/role/http.service';
+import { PermissionHttpService } from './shared/permission/http.service';
 
 export function provideAuthorizationRoot(): EnvironmentProviders {
-  return makeEnvironmentProviders([]);
-};
-  
+  return makeEnvironmentProviders([
+    RoleHttpService,
+    PermissionHttpService,
+  ]);
+}
+
 export function provideAuthorizationFeature(): EnvironmentProviders {
   return makeEnvironmentProviders([
     importProvidersFrom(
-      // CommonModule,
-      // FormsModule,
-      // ReactiveFormsModule,
-      // CartesianCommonModule,
-    ),
-    importProvidersFrom(
-      EffectsModule.forFeature([AuthEffects]),
-      StoreModule.forFeature(fromRole.rolesFeatureKey, fromRole.reducer),
-      StoreModule.forFeature(fromPermissions.permissionsFeatureKey, fromPermissions.reducer)
+      StoreModule.forFeature(fromRole.featureKey, fromRole.reducer),
+      StoreModule.forFeature(fromPermission.featureKey, fromPermission.reducer),
+      EffectsModule.forFeature([RoleEffects, PermissionEffects]),
     ),
     AuthorizationSandbox,
-    AuthHttpService,
+    RoleHttpService,
+    PermissionHttpService,
   ]);
 }

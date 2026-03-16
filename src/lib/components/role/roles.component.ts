@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, inject, Injector, OnDestroy, OnInit } from '@angular/core';
-import { ListingControlsComponent } from '@cartesianui/common';
+import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy, effect, inject } from '@angular/core';
+import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';
@@ -16,10 +16,18 @@ type ChildComponent = typeof childComponents;
 @Component({
     selector: 'auth-roles',
     templateUrl: './roles.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       ...LISTING_IMPORTS,
+      AppDatatableComponent,
       RoleComponent,
       RoleFormComponent
+    ],
+    providers: [
+      {
+        provide: ENTITY_CONSTRUCTOR,
+        useValue: Role
+      }
     ],
     standalone: true
 })
@@ -28,37 +36,33 @@ export class RolesComponent extends ListingControlsComponent<IRole, ChildCompone
 
   protected sb = inject(AuthorizationSandbox);
 
-  ngOnInit(): void {
-    this.initCriteria().with('permissions');
-    this.hydrateSearchCriteria();
-    this.addSubscriptions();
-  }
+  private readonly busyEffect = effect(() => {
+    this.handleBusyState(this.sb.role.getState());
+  });
 
-  addSubscriptions() {
-    this.subscriptions.push(
-      this.sb.rolesMetaData$.subscribe((meta: any) => {
-        if (meta) {
-          this.pagination = meta ? meta.pagination : null;
-        }
-      })
-    );
+  private readonly completeEffect = effect(() => {
+    if (!this.sb.role.getCompleted()) return;
+    this.sb.role.clearRequestState(RequestType.Get);
+  });
+
+  ngOnInit(): void {
+    this.loadEntityMetadata();
+    this.initCriteria().with('permissions');
   }
 
   list(): void {
-    this.sb.getRoles(this.criteria.httpParams());
+    this.sb.role.getAll(this.criteria.httpParams());
   }
 
   onSearch($event: { text: string }) {
     this.criteria.page(1);
     this.criteria.updateForm('name', $event.text);
-    // this.appendSearchCriteriaToUrl();
-    // this.list();
   }
 
   onDelete() {
     this.message.confirm('Are you sure you want to delete this record?', 'Confirm Deletion', (confirmed) => {
       if (confirmed) {
-        this.sb.deleteRole(this.selected[0].id);
+        this.sb.role.delete(this.selected[0].id);
         this.selected = [];
       }
     });
@@ -70,7 +74,7 @@ export class RolesComponent extends ListingControlsComponent<IRole, ChildCompone
   }
 
   edit(role: Role) {
-    this.sb.selectRole(role);
+    this.sb.role.select(role);
     this.showChildComponent(this.childComponents.editRole, 'editRole');
   }
 }
