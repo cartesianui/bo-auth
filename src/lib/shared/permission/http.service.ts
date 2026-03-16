@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IHttpService, HttpService, GET, Criteria, DefaultHeaders, RequestCriteriaOuput, Path } from '@cartesianui/core';
+import { IHttpService, HttpService, GET, Criteria, DefaultHeaders, RequestCriteriaOuput, Path, Query } from '@cartesianui/core';
 import { Permission } from '../../models';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class PermissionHttpService extends HttpService implements IHttpService<P
   }
 
   @GET('/permissions/{id}')
-  public getById(@Path('id') id: string): Observable<any> {
+  public getById(@Path('id') id: string, @Query('include') includes?: string): Observable<any> {
     return null;
   }
 
