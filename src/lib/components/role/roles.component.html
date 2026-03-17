@@ -1,6 +1,5 @@
 <page-title [title]="'Roles'" [breadcrumb]="true"></page-title>
 <page-actions
-  (searchChange)="onSearch($event)"
   (delete)="onDelete()"
   (create)="showChildComponent(childComponents.createRole, 'createRole')"
   [disabled]="{
@@ -14,11 +13,7 @@
 </app-offcanvas>
 
 <div class="main-content dt" #dtContainer>
-  <div class="row">
-    <div class="col-md-12 my-2">
-      <span class="float-end">Total: {{ sb.role.pagination()?.total }}</span>
-    </div>
-  </div>
+  <search-panel [fields]="searchFields" [criteria]="criteria" searchKey="name" searchPlaceholder="Search roles..."></search-panel>
   <div class="card">
     <div class="card-body">
       <app-datatable

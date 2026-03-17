@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy, effect, inject } from '@angular/core';
-import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent } from '@cartesianui/common';
+import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent, SearchPanelComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';
@@ -18,6 +18,7 @@ type PermissionChildComponent = typeof permissionChildComponents;
     imports: [
       ...LISTING_IMPORTS,
       AppDatatableComponent,
+      SearchPanelComponent,
       PermissionComponent
     ],
     providers: [
@@ -51,11 +52,6 @@ export class PermissionsComponent extends ListingControlsComponent<Permission, P
   view(permission: Permission) {
     this.sb.permission.select(permission);
     this.showChildComponent(this.childComponents.permissionDetails, 'permissionDetails');
-  }
-
-  onSearch($event: { text: string }) {
-    this.criteria.page(1);
-    this.criteria.updateForm('name', $event.text);
   }
 
   list(): void {

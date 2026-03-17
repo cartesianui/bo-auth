@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy, effect, inject } from '@angular/core';
-import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent } from '@cartesianui/common';
+import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent, SearchPanelComponent } from '@cartesianui/common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';
@@ -20,6 +20,7 @@ type ChildComponent = typeof childComponents;
     imports: [
       ...LISTING_IMPORTS,
       AppDatatableComponent,
+      SearchPanelComponent,
       RoleComponent,
       RoleFormComponent
     ],
@@ -52,11 +53,6 @@ export class RolesComponent extends ListingControlsComponent<IRole, ChildCompone
 
   list(): void {
     this.sb.role.getAll(this.criteria.httpParams());
-  }
-
-  onSearch($event: { text: string }) {
-    this.criteria.page(1);
-    this.criteria.updateForm('name', $event.text);
   }
 
   onDelete() {

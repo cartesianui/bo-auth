@@ -23,11 +23,10 @@ export interface IRole {
     { key: 'displayName', label: 'Display Name', opt: {} },
     { key: 'description', label: 'Description', opt: {} },
   ],
-  search: {
-    id: { column: 'id', operator: '=', value: null, options: { url: false} },
-    name: { column: 'name', operator: 'like', value: null },
-    guardName: { column: 'guard_name', operator: '=', value: 'api', options: { url: false}}
-  }
+  search: [
+    'name:like',
+    'displayName:like'
+  ]
 })
 export class Role extends BaseModel implements IRole {
   type: string;

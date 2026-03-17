@@ -13,11 +13,10 @@ export interface IPermission {
     { key: 'displayName', label: 'Display Name', opt: {} },
     { key: 'description', label: 'Description', opt: {} },
   ],
-  search: {
-    id: { column: 'id', operator: '=', value: null, options: { url: false} },
-    name: { column: 'name', operator: '=', value: null },
-    guardName: { column: 'guard_name', operator: '=', value: "api", options: { url: false} }
-  }
+  search: [
+    'name:like',
+    'displayName:like'
+  ]
 })
 export class Permission extends BaseModel implements IPermission {
   public id: string;

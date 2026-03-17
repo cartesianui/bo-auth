@@ -7,9 +7,7 @@ interface IRolePermissions {
 }
 
 @EntityMeta({
-  search: {
-
-  }
+  search: []
 })
 export class RolePermissions extends BaseModel implements IRolePermissions {
   id: string;
