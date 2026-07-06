@@ -22,7 +22,7 @@ import { BadgeModule } from '@coreui/angular';
 
 // Cartesian UI modules
 import { CommonModule as CartesianCommonModule } from '@cartesianui/common';
-import { BoLayoutModule } from '@cartesianui/coreui';
+import { ShellModule } from '@cartesianui/coreui';
 
 /**
  * 🧩 Core shared imports
@@ -31,7 +31,7 @@ import { BoLayoutModule } from '@cartesianui/coreui';
 export const COMMON_IMPORTS = [
   CommonModule,
   CartesianCommonModule,
-  BoLayoutModule
+  ShellModule
 ];
 
 /**
